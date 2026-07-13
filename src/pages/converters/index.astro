@@ -1,0 +1,36 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const convs = [
+  { href:'/converters/length/', icon:'📏', title:'Length Converter', desc:'Metres, feet, inches, miles, km.' },
+  { href:'/converters/weight/', icon:'🏋️', title:'Weight Converter', desc:'Kg, pounds, stone, ounces.' },
+  { href:'/converters/temperature/', icon:'🌡️', title:'Temperature Converter', desc:'Celsius, Fahrenheit, Kelvin.' },
+  { href:'/converters/speed/', icon:'💨', title:'Speed Converter', desc:'MPH, km/h, m/s, knots.' },
+  { href:'/converters/volume/', icon:'🧪', title:'Volume Converter', desc:'Litres, gallons, cups, fluid oz.' },
+  { href:'/converters/time/', icon:'⏱️', title:'Time Converter', desc:'Seconds to years and everything between.' },
+  { href:'/converters/ring-size/', icon:'💍', title:'Ring Size Converter', desc:'UK, US, EU ring size charts.' },
+];
+---
+<Layout title="Free Unit Converters — SpotOn Calculator" description="All our free unit converters: length, weight, temperature, speed, volume, time and ring size.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><span>Converters</span></nav>
+        <h1 class="display-lg">Unit Converters</h1>
+        <p class="body-md text-body" style="margin-top:8px;max-width:480px;">Instant, accurate unit conversions across all common measurement types.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="grid-3">
+        {convs.map(c => (
+          <a href={c.href} class="card card-link">
+            <div class="card-icon card-icon-purple" style="font-size:22px;">{c.icon}</div>
+            <h2 class="body-sm-strong mb-sm">{c.title}</h2>
+            <p class="body-sm text-body">{c.desc}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

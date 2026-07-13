@@ -1,0 +1,51 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const conversions = [
+  { from: 'kg to Pounds', formula: '× 2.20462', example: '1 kg = 2.205 lb' },
+  { from: 'Pounds to kg', formula: '× 0.453592', example: '1 lb = 0.454 kg' },
+  { from: 'kg to Stone', formula: '× 0.157473', example: '70 kg = 11.02 st' },
+  { from: 'Stone to kg', formula: '× 6.35029', example: '10 st = 63.5 kg' },
+  { from: 'Pounds to Ounces', formula: '× 16', example: '1 lb = 16 oz' },
+  { from: 'Ounces to Pounds', formula: '× 0.0625', example: '16 oz = 1 lb' },
+  { from: 'Tonnes to kg', formula: '× 1000', example: '1 t = 1000 kg' },
+  { from: 'kg to Grams', formula: '× 1000', example: '1 kg = 1000 g' },
+];
+---
+<Layout title="Weight Conversions — kg, Pounds, Stone, Ounces Reference | SpotOn" description="Quick reference for common weight conversions: kg to pounds, stone, ounces and tonnes. With interactive converter.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/converters/">Converters</a><span class="breadcrumb-sep">›</span><span>Weight Conversions</span></nav>
+        <h1 class="display-lg">Weight Conversions</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Quick reference for kg, pounds, stone and ounce conversions.</p>
+      </div>
+      <a href="/converters/weight/" class="btn-primary" style="flex-shrink:0;">Open Converter →</a>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container">
+      <div class="grid-3" style="margin-bottom:48px;">
+        {conversions.map(c => (
+          <div class="card">
+            <h2 class="body-sm-strong mb-sm">{c.from}</h2>
+            <p class="body-sm text-mute" style="font-family:var(--font-mono); font-size:13px; margin-bottom:8px;">{c.formula}</p>
+            <p class="body-sm text-body">{c.example}</p>
+          </div>
+        ))}
+      </div>
+      <div style="text-align:center;"><a href="/converters/weight/" class="btn-primary">Use Interactive Weight Converter</a></div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>Metric weight units</h2>
+    <p>The SI unit of mass is the kilogram (kg). 1 kg = 1000 grams. 1 tonne (metric ton) = 1000 kg. These units are used worldwide in science and most everyday contexts.</p>
+    <h2>Imperial weight units</h2>
+    <p>Pounds and ounces are used primarily in the US. In the UK, stone is still commonly used for body weight. 1 stone = 14 pounds = 6.35 kg. 1 pound = 16 ounces.</p>
+    <h2>Quick conversions to remember</h2>
+    <ul>
+      <li>A kilogram is just over 2.2 pounds</li>
+      <li>A pound is about 454 grams</li>
+      <li>11 stone is approximately 70 kg (a common adult weight)</li>
+    </ul>
+  </div></div></section>
+</Layout>

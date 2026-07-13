@@ -1,0 +1,53 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const conversions = [
+  { from: 'Metres to Feet', formula: '× 3.28084', example: '1 m = 3.281 ft' },
+  { from: 'Feet to Metres', formula: '× 0.3048', example: '1 ft = 0.305 m' },
+  { from: 'Miles to Kilometres', formula: '× 1.60934', example: '1 mi = 1.609 km' },
+  { from: 'Kilometres to Miles', formula: '× 0.621371', example: '1 km = 0.621 mi' },
+  { from: 'Inches to Centimetres', formula: '× 2.54', example: '1 in = 2.54 cm' },
+  { from: 'Centimetres to Inches', formula: '× 0.393701', example: '1 cm = 0.394 in' },
+  { from: 'Yards to Metres', formula: '× 0.9144', example: '1 yd = 0.914 m' },
+  { from: 'Nautical Miles to km', formula: '× 1.852', example: '1 nmi = 1.852 km' },
+];
+---
+<Layout title="Length Conversions — Common Unit Conversion Reference | SpotOn" description="Quick reference for common length conversions: metres to feet, miles to km, inches to cm and more. With interactive converter.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/converters/">Converters</a><span class="breadcrumb-sep">›</span><span>Length Conversions</span></nav>
+        <h1 class="display-lg">Length Conversions</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Quick reference guide for common length unit conversions.</p>
+      </div>
+      <a href="/converters/length/" class="btn-primary" style="flex-shrink:0;">Open Converter →</a>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container">
+      <div class="grid-3" style="margin-bottom:48px;">
+        {conversions.map(c => (
+          <div class="card">
+            <h2 class="body-sm-strong mb-sm">{c.from}</h2>
+            <p class="body-sm text-mute" style="font-family:var(--font-mono); font-size:13px; margin-bottom:8px;">{c.formula}</p>
+            <p class="body-sm text-body">{c.example}</p>
+          </div>
+        ))}
+      </div>
+      <div style="text-align:center;">
+        <a href="/converters/length/" class="btn-primary">Use Interactive Length Converter</a>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>The metric system for length</h2>
+    <p>The International System of Units (SI) uses the metre as the base unit of length. Common metric prefixes: kilo (×1000), centi (÷100), milli (÷1000). So 1 kilometre = 1000 metres, 1 centimetre = 0.01 metres.</p>
+    <h2>Imperial length units</h2>
+    <p>The imperial system uses inches, feet, yards and miles. 1 foot = 12 inches. 1 yard = 3 feet. 1 mile = 1760 yards = 5280 feet. These units are primarily used in the US and to some extent in the UK for road distances.</p>
+    <h2>Conversion tips</h2>
+    <ul>
+      <li>A rough rule: multiply km by 0.6 to get miles (exact is ×0.621371)</li>
+      <li>Metres to feet: multiply by 3.28 (exact is ×3.28084)</li>
+      <li>Inches to cm: multiply by 2.54 (exact, defined)</li>
+    </ul>
+  </div></div></section>
+</Layout>

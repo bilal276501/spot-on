@@ -1,0 +1,91 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Darts Calculator & Checkout Guide — Free Online | SpotOn" description="Free online darts calculator. Track scores, get checkout suggestions for 501 and 301 darts. Instant, no sign-up.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/calculators/">Calculators</a><span class="breadcrumb-sep">›</span><span>Darts</span></nav>
+        <h1 class="display-lg">Darts Calculator</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Score tracker with checkout suggestions for 501 & 301.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="converter-box" style="max-width:500px; width:100%;">
+        <div style="display:flex; gap:8px; margin-bottom:20px;">
+          <button class="pill active" id="g501">501</button>
+          <button class="pill" id="g301">301</button>
+          <button class="pill" id="gcricket">Cricket</button>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px;">
+          <div>
+            <p class="caption-mono mb-sm">Player 1</p>
+            <div id="p1-score" style="font-size:48px; font-weight:600; letter-spacing:-2px; line-height:1;">501</div>
+            <p class="body-sm text-mute" id="p1-checkout" style="margin-top:4px; min-height:20px;"></p>
+          </div>
+          <div>
+            <p class="caption-mono mb-sm">Player 2</p>
+            <div id="p2-score" style="font-size:48px; font-weight:600; letter-spacing:-2px; line-height:1;">501</div>
+            <p class="body-sm text-mute" id="p2-checkout" style="margin-top:4px; min-height:20px;"></p>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <p class="caption-mono mb-sm">Enter score this round</p>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <input type="number" id="dart-score" placeholder="0" min="0" max="180" style="flex:1; height:48px; border:1px solid var(--color-hairline); border-radius:var(--radius-sm); padding:0 12px; font-size:20px; text-align:center;" />
+            <div style="display:flex; gap:6px;">
+              <button class="btn-primary-sm" id="add-p1">P1</button>
+              <button class="btn-primary-sm" id="add-p2">P2</button>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn-secondary" id="undo-btn" style="flex:1; justify-content:center;">↩ Undo</button>
+          <button class="btn-secondary" id="reset-btn" style="flex:1; justify-content:center;">Reset</button>
+        </div>
+        <div id="winner-msg" style="display:none; background:var(--color-primary); color:var(--color-on-primary); border-radius:var(--radius-md); padding:20px; text-align:center; margin-top:16px;">
+          <div style="font-size:32px; font-weight:600;" id="winner-text"></div>
+          <p style="opacity:0.6; font-size:14px; margin-top:8px;">Press Reset to play again</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>How to use the Darts Calculator</h2>
+    <p>Select your game format (501 or 301), enter each player's score for the round, and click P1 or P2 to subtract from their total. The calculator suggests checkout combinations when a player is within finishing range.</p>
+    <h2>Common checkouts</h2>
+    <p>170: T20 T20 Bull | 167: T20 T19 Bull | 160: T20 T20 D20 | 121: T20 T11 D4 | 101: T17 D25. The calculator shows the optimal checkout path automatically.</p>
+  </div></div></section>
+</Layout>
+<script>
+  let startScore = 501, p1 = 501, p2 = 501, history = [];
+  const checkouts = {170:'T20 T20 Bull',167:'T20 T19 Bull',164:'T20 T18 Bull',161:'T20 T17 Bull',160:'T20 T20 D20',158:'T20 T20 D19',157:'T20 T19 D20',156:'T20 T20 D18',155:'T20 T19 D19',154:'T20 T18 D20',153:'T20 T19 D18',152:'T20 T20 D16',151:'T20 T17 D20',150:'T20 T18 D18',141:'T20 T15 D18',140:'T20 T20 D10',139:'T20 T19 D11',138:'T20 T18 D12',137:'T20 T19 D10',136:'T20 T20 D8',135:'T20 T17 D12',134:'T20 T14 D16',133:'T20 T19 D8',132:'T20 T16 D12',131:'T20 T13 D16',130:'T20 T20 D5',129:'T19 T16 D12',128:'T18 T14 D16',127:'T20 T17 D8',126:'T19 T19 D6',125:'T20 T15 D10',124:'T20 T14 D11',123:'T19 T16 D9',122:'T18 T18 D7',121:'T20 T11 D14',120:'T20 D20',119:'T19 T10 D16',118:'T20 D19',117:'T20 D18',116:'T20 D18',115:'T20 D17',114:'T20 D17',113:'T20 D16',112:'T20 D16',111:'T20 D15',110:'T20 D15',109:'T20 D14',108:'T20 D14',107:'T19 D25',106:'T18 D16',105:'T20 D12',104:'T18 D25',103:'T19 D23',102:'T20 D21',101:'T17 D25',100:'T20 D20',99:'T19 D21',98:'T20 D19',97:'T19 D20',96:'T20 D18',95:'T19 D19',94:'T18 D20',93:'T19 D18',92:'T20 D16',91:'T17 D20',90:'T18 D18',89:'T19 D16',88:'T20 D14',87:'T17 D18',86:'T18 D16',85:'T15 D20',84:'T20 D12',83:'T17 D16',82:'T14 D20',81:'T19 D12',80:'T20 D10',79:'T13 D20',78:'T18 D12',77:'T19 D10',76:'T20 D8',75:'T17 D12',74:'T14 D16',73:'T19 D8',72:'T16 D12',71:'T13 D16',70:'T18 D8',69:'T19 D6',68:'T20 D4',67:'T17 D8',66:'T10 D18',65:'T19 D4',64:'T16 D8',63:'T13 D12',62:'T10 D16',61:'T15 D8',60:'D30',40:'D20',36:'D18',32:'D16',20:'D10',2:'D1'};
+  function getCheckout(s){ return checkouts[s]||(s<=40&&s%2===0?`D${s/2}`:s<=170&&s>1?'—':'—'); }
+  function updateDisplay(){
+    document.getElementById('p1-score').textContent=p1;
+    document.getElementById('p2-score').textContent=p2;
+    document.getElementById('p1-checkout').textContent=p1<=170&&p1>1?'Checkout: '+getCheckout(p1):'';
+    document.getElementById('p2-checkout').textContent=p2<=170&&p2>1?'Checkout: '+getCheckout(p2):'';
+  }
+  function setGame(s){ startScore=s; p1=s; p2=s; history=[]; document.getElementById('winner-msg').style.display='none'; updateDisplay(); }
+  document.getElementById('g501').addEventListener('click',()=>{ document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active')); document.getElementById('g501').classList.add('active'); setGame(501); });
+  document.getElementById('g301').addEventListener('click',()=>{ document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active')); document.getElementById('g301').classList.add('active'); setGame(301); });
+  document.getElementById('gcricket').addEventListener('click',()=>{ document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active')); document.getElementById('gcricket').classList.add('active'); alert('Cricket scoring coming soon!'); });
+  function addScore(player){
+    const s=parseInt(document.getElementById('dart-score').value)||0;
+    if(s<0||s>180) return;
+    const before={p1,p2};
+    if(player===1){ if(p1-s<0) return; p1-=s; if(p1===0){showWinner('Player 1 wins! 🎯');} }
+    else { if(p2-s<0) return; p2-=s; if(p2===0){showWinner('Player 2 wins! 🎯');} }
+    history.push(before);
+    document.getElementById('dart-score').value='';
+    updateDisplay();
+  }
+  function showWinner(msg){ document.getElementById('winner-text').textContent=msg; document.getElementById('winner-msg').style.display='block'; }
+  document.getElementById('add-p1').addEventListener('click',()=>addScore(1));
+  document.getElementById('add-p2').addEventListener('click',()=>addScore(2));
+  document.getElementById('undo-btn').addEventListener('click',()=>{ if(!history.length) return; const s=history.pop(); p1=s.p1; p2=s.p2; document.getElementById('winner-msg').style.display='none'; updateDisplay(); });
+  document.getElementById('reset-btn').addEventListener('click',()=>setGame(startScore));
+</script>

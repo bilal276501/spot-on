@@ -1,0 +1,203 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  keywords?: string;
+  ogImage?: string;
+}
+const {
+  title = 'Online Calculator — Free Online Calculators & Unit Converters | SpotOn',
+  description = 'Free online calculator for everyday, scientific & percentage maths, plus a full online converter suite. The best free online calculator tools — fast, accurate, no sign-up.',
+  canonical = Astro.url.href,
+  keywords = 'online calculator, free online calculator, best online calculator, online calculator free, best free online calculator, online converter',
+  ogImage = 'https://spotoncalculator.com/og-image.png',
+} = Astro.props;
+
+const navItems = [
+  { label: 'Calculators', href: '/calculators/' },
+  { label: 'Converters', href: '/converters/' },
+  { label: 'Scientific', href: '/calculators/scientific/' },
+  { label: 'BMI', href: '/calculators/bmi/' },
+  { label: 'More Tools', href: '/#tools' },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta name="keywords" content={keywords} />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="SpotOn Calculator" />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon.ico" />
+  <script is:inline>
+    // Runs before first paint to avoid a light/dark flash.
+    (function () {
+      try {
+        var stored = localStorage.getItem('spoton-theme');
+        var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+  <title>{title}</title>
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:site_name" content="SpotOn Calculator" />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={title} />
+  <meta property="og:locale" content="en_US" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+  <!-- Structured data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "SpotOn Calculator",
+    "alternateName": "Online Calculator by SpotOn",
+    "url": "https://spotoncalculator.com",
+    "description": description,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://spotoncalculator.com/calculators/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  })} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/global.css" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5NYMZ556S1"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-5NYMZ556S1');
+  </script>
+</head>
+<body>
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="SpotOn Calculator home">
+        <div class="nav-logo-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <rect x="2" y="2" width="5" height="5" rx="1" fill="white"/>
+            <rect x="9" y="2" width="5" height="5" rx="1" fill="white" opacity="0.6"/>
+            <rect x="2" y="9" width="5" height="5" rx="1" fill="white" opacity="0.6"/>
+            <rect x="9" y="9" width="5" height="5" rx="1" fill="white"/>
+          </svg>
+        </div>
+        SpotOn Calculator
+      </a>
+      <ul class="nav-links" role="list">
+        {navItems.map(item => (
+          <li>
+            <a href={item.href} class={Astro.url.pathname.startsWith(item.href) ? 'active' : ''}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <a href="/" class="btn-primary-sm">Launch Calculator</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <a href="/" class="nav-logo" style="margin-bottom: 12px; display:inline-flex;">
+            <div class="nav-logo-icon">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <rect x="2" y="2" width="5" height="5" rx="1" fill="white"/>
+                <rect x="9" y="2" width="5" height="5" rx="1" fill="white" opacity="0.6"/>
+                <rect x="2" y="9" width="5" height="5" rx="1" fill="white" opacity="0.6"/>
+                <rect x="9" y="9" width="5" height="5" rx="1" fill="white"/>
+              </svg>
+            </div>
+            SpotOn Calculator
+          </a>
+          <p style="font-size:14px; color: var(--color-body); max-width:240px; margin-top:12px;">
+            Free, fast, and beautifully simple calculators and converters for everyday use.
+          </p>
+        </div>
+        <div>
+          <p class="footer-col-label">Calculators</p>
+          <ul class="footer-links">
+            <li><a href="/calculators/simple/">Simple Calculator</a></li>
+            <li><a href="/calculators/scientific/">Scientific</a></li>
+            <li><a href="/calculators/bmi/">BMI Calculator</a></li>
+            <li><a href="/calculators/percentage/">Percentage</a></li>
+            <li><a href="/calculators/darts/">Darts</a></li>
+            <li><a href="/calculators/patio/">Patio</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-col-label">Converters</p>
+          <ul class="footer-links">
+            <li><a href="/converters/length/">Length</a></li>
+            <li><a href="/converters/weight/">Weight</a></li>
+            <li><a href="/converters/temperature/">Temperature</a></li>
+            <li><a href="/converters/speed/">Speed</a></li>
+            <li><a href="/converters/volume/">Volume</a></li>
+            <li><a href="/converters/time/">Time</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-col-label">Tools</p>
+          <ul class="footer-links">
+            <li><a href="/calculators/abacus/">Online Abacus</a></li>
+            <li><a href="/converters/ring-size/">Ring Size</a></li>
+            <li><a href="/calculators/fullscreen/">Fullscreen</a></li>
+            <li><a href="/converters/">All Converters</a></li>
+            <li><a href="/calculators/">All Calculators</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© {new Date().getFullYear()} SpotOnCalculator.com — Free online calculators.</span>
+        <span style="font-family: var(--font-mono); font-size: 11px;">spotoncalculator.com</span>
+      </div>
+    </div>
+  </footer>
+
+  <script is:inline>
+    (function () {
+      var btn = document.getElementById('theme-toggle');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        try { localStorage.setItem('spoton-theme', next); } catch (e) {}
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="BMI Calculator — Body Mass Index | SpotOn" description="Free online BMI calculator. Calculate your Body Mass Index in metric (kg/cm) or imperial (lb/in) units instantly.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/calculators/">Calculators</a><span class="breadcrumb-sep">›</span><span>BMI Calculator</span></nav>
+        <h1 class="display-lg">BMI Calculator</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Calculate your Body Mass Index — metric or imperial.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="converter-box" style="max-width:480px; width:100%;">
+        <div style="display:flex; gap:8px; margin-bottom:24px;">
+          <button class="pill active" id="bmi-metric">Metric (kg / cm)</button>
+          <button class="pill" id="bmi-imperial">Imperial (lb / in)</button>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px;">
+          <div class="converter-field">
+            <label id="lbl-weight">Weight (kg)</label>
+            <input type="number" id="bmi-weight" placeholder="70" min="1" max="500" />
+          </div>
+          <div class="converter-field">
+            <label id="lbl-height">Height (cm)</label>
+            <input type="number" id="bmi-height" placeholder="175" min="1" max="300" />
+          </div>
+        </div>
+        <button class="btn-primary" id="bmi-calc" style="width:100%; justify-content:center; margin-bottom:20px;">Calculate BMI</button>
+        <div id="bmi-result" style="display:none;">
+          <div style="background:var(--color-primary); color:var(--color-on-primary); border-radius:var(--radius-md); padding:24px; text-align:center;">
+            <div style="font-size:56px; font-weight:600; letter-spacing:-2px; line-height:1;" id="bmi-num">—</div>
+            <div style="font-family:var(--font-mono); font-size:12px; opacity:0.5; margin-top:4px;">BMI</div>
+            <div style="font-size:18px; font-weight:500; margin-top:12px;" id="bmi-cat">—</div>
+          </div>
+          <div style="margin-top:16px; display:grid; grid-template-columns:repeat(4,1fr); gap:8px;" id="bmi-scale">
+            <div style="background:#4ade80; border-radius:6px; padding:10px; text-align:center;"><div style="font-size:11px; font-weight:500;">Underweight</div><div style="font-size:11px; opacity:0.7;">&lt;18.5</div></div>
+            <div style="background:#22c55e; border-radius:6px; padding:10px; text-align:center;"><div style="font-size:11px; font-weight:500;">Normal</div><div style="font-size:11px; opacity:0.7;">18.5–24.9</div></div>
+            <div style="background:#f59e0b; border-radius:6px; padding:10px; text-align:center;"><div style="font-size:11px; font-weight:500;">Overweight</div><div style="font-size:11px; opacity:0.7;">25–29.9</div></div>
+            <div style="background:#ef4444; border-radius:6px; padding:10px; text-align:center;"><div style="font-size:11px; font-weight:500;">Obese</div><div style="font-size:11px; opacity:0.7;">≥30</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>What is BMI?</h2>
+    <p>Body Mass Index (BMI) is a measure of body fat based on height and weight. It applies to adult men and women and is used as a screening tool, not a diagnostic tool.</p>
+    <h2>BMI Formula</h2>
+    <p>Metric: BMI = weight(kg) ÷ height(m)². Imperial: BMI = (weight(lb) ÷ height(in)²) × 703.</p>
+    <h2>BMI Categories</h2>
+    <ul>
+      <li>Underweight: Below 18.5</li>
+      <li>Normal weight: 18.5 – 24.9</li>
+      <li>Overweight: 25 – 29.9</li>
+      <li>Obese: 30 and above</li>
+    </ul>
+    <h2>Limitations of BMI</h2>
+    <p>BMI does not account for muscle mass, bone density, age or sex distribution of fat. Always consult a healthcare professional for a complete health assessment.</p>
+  </div></div></section>
+</Layout>
+<script>
+  let isMetric = true;
+  document.getElementById('bmi-metric').addEventListener('click',()=>{ isMetric=true; document.getElementById('bmi-metric').classList.add('active'); document.getElementById('bmi-imperial').classList.remove('active'); document.getElementById('lbl-weight').textContent='Weight (kg)'; document.getElementById('lbl-height').textContent='Height (cm)'; document.getElementById('bmi-weight').placeholder='70'; document.getElementById('bmi-height').placeholder='175'; });
+  document.getElementById('bmi-imperial').addEventListener('click',()=>{ isMetric=false; document.getElementById('bmi-imperial').classList.add('active'); document.getElementById('bmi-metric').classList.remove('active'); document.getElementById('lbl-weight').textContent='Weight (lb)'; document.getElementById('lbl-height').textContent='Height (in)'; document.getElementById('bmi-weight').placeholder='154'; document.getElementById('bmi-height').placeholder='69'; });
+  document.getElementById('bmi-calc').addEventListener('click',()=>{
+    const w=parseFloat(document.getElementById('bmi-weight').value);
+    const h=parseFloat(document.getElementById('bmi-height').value);
+    if(!w||!h) return;
+    let bmi; if(isMetric){ const hm=h/100; bmi=w/(hm*hm); } else { bmi=(w/(h*h))*703; }
+    bmi=Math.round(bmi*10)/10;
+    const cat=bmi<18.5?'Underweight':bmi<25?'Normal weight':bmi<30?'Overweight':'Obese';
+    document.getElementById('bmi-num').textContent=bmi;
+    document.getElementById('bmi-cat').textContent=cat;
+    document.getElementById('bmi-result').style.display='block';
+  });
+</script>

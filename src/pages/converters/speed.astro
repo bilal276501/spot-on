@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Speed Converter — MPH, km/h, m/s, Knots | SpotOn" description="Free online speed converter. Convert MPH, km/h, m/s, knots, Mach and more instantly.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/converters/">Converters</a><span class="breadcrumb-sep">›</span><span>Speed</span></nav>
+        <h1 class="display-lg">Speed Converter</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Convert MPH, km/h, m/s, knots, Mach and more.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="converter-box" style="max-width:600px; width:100%;">
+        <div class="converter-row">
+          <div class="converter-field"><label>Value</label><input type="number" id="sp-val" value="60" step="any" /></div>
+          <div class="converter-swap" id="sp-swap">⇄</div>
+          <div class="converter-field"><label>Result</label><input type="number" id="sp-res" readonly style="background:var(--color-canvas-soft);" /></div>
+        </div>
+        <div class="converter-unit-row">
+          <div class="converter-field"><label>From</label>
+            <select id="sp-from">
+              <option value="0.44704">Miles per hour (mph)</option>
+              <option value="0.277778">km per hour (km/h)</option>
+              <option value="1">Metres per second (m/s)</option>
+              <option value="0.514444">Knots (kn)</option>
+              <option value="340.29">Mach (at sea level)</option>
+              <option value="299792458">Speed of light (c)</option>
+            </select>
+          </div>
+          <div class="converter-field"><label>To</label>
+            <select id="sp-to">
+              <option value="0.277778">km per hour (km/h)</option>
+              <option value="0.44704">Miles per hour (mph)</option>
+              <option value="1">Metres per second (m/s)</option>
+              <option value="0.514444">Knots (kn)</option>
+              <option value="340.29">Mach (at sea level)</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:24px;"><p class="caption-mono mb-sm">All conversions</p>
+          <table style="width:100%; border-collapse:collapse;"><thead><tr style="border-bottom:1px solid var(--color-hairline);"><th style="text-align:left; padding:8px 0; font-size:12px; font-family:var(--font-mono); color:var(--color-mute);">Unit</th><th style="text-align:right; padding:8px 0; font-size:12px; font-family:var(--font-mono); color:var(--color-mute);">Value</th></tr></thead>
+          <tbody id="sp-tbody"></tbody></table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>Speed conversion reference</h2>
+    <p>60 mph = 96.56 km/h = 26.82 m/s. 1 knot = 1.852 km/h = 1.151 mph. The speed of sound at sea level is approximately 340 m/s or 761 mph (Mach 1).</p>
+  </div></div></section>
+</Layout>
+<script>
+  const units=[{n:'Miles/hour (mph)',v:0.44704},{n:'km/hour (km/h)',v:0.277778},{n:'Metres/sec (m/s)',v:1},{n:'Knots (kn)',v:0.514444},{n:'Feet/sec (ft/s)',v:0.3048},{n:'Mach',v:340.29}];
+  function convert(){
+    const val=parseFloat(document.getElementById('sp-val').value)||0;
+    const from=parseFloat(document.getElementById('sp-from').value), to=parseFloat(document.getElementById('sp-to').value);
+    document.getElementById('sp-res').value=parseFloat((val*from/to).toPrecision(8));
+    const base=val*from;
+    document.getElementById('sp-tbody').innerHTML=units.map(u=>`<tr style="border-bottom:1px solid var(--color-hairline);"><td style="padding:10px 0;font-size:14px;color:var(--color-body);">${u.n}</td><td style="padding:10px 0;font-size:14px;font-family:var(--font-mono);text-align:right;">${parseFloat((base/u.v).toPrecision(7)).toLocaleString()}</td></tr>`).join('');
+  }
+  ['sp-val','sp-from','sp-to'].forEach(id=>document.getElementById(id).addEventListener('input',convert));
+  document.getElementById('sp-swap').addEventListener('click',()=>{const f=document.getElementById('sp-from').value,t=document.getElementById('sp-to').value; document.getElementById('sp-from').value=t; document.getElementById('sp-to').value=f; document.getElementById('sp-val').value=document.getElementById('sp-res').value||1; convert();});
+  convert();
+</script>

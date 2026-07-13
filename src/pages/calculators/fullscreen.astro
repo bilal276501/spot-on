@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Fullscreen Calculator Online — Free | SpotOn" description="Use our free fullscreen online calculator. Distraction-free, keyboard-friendly, works on any screen.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/calculators/">Calculators</a><span class="breadcrumb-sep">›</span><span>Fullscreen</span></nav>
+        <h1 class="display-lg">Fullscreen Calculator</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Click below to open a completely distraction-free, fullscreen calculator.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft" style="min-height:70vh; display:flex; align-items:center; justify-content:center;">
+    <div style="text-align:center;">
+      <div style="font-size:80px; margin-bottom:24px;">⛶</div>
+      <h2 class="display-md mb-md">Enter Fullscreen Mode</h2>
+      <p class="body-md text-body mb-xl" style="max-width:400px; margin-left:auto; margin-right:auto;">Expand the calculator to fill your entire screen. Press Escape to exit. Keyboard shortcuts work in fullscreen.</p>
+      <button class="btn-primary" id="fs-btn" style="font-size:18px; padding:16px 40px;">Open Fullscreen Calculator</button>
+    </div>
+  </section>
+  <div id="fs-overlay" style="display:none; position:fixed; inset:0; background:#171717; z-index:9999; flex-direction:column;">
+    <div style="padding:16px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1);">
+      <span style="color:white; font-size:14px; font-family:var(--font-mono); opacity:0.5;">SpotOn Calculator</span>
+      <button id="fs-close" style="color:rgba(255,255,255,0.6); font-size:24px; background:none; border:none; cursor:pointer;" aria-label="Exit fullscreen">✕</button>
+    </div>
+    <div style="flex:1; display:flex; align-items:center; justify-content:center; padding:24px;">
+      <div id="fs-calc" style="background:#1e1e1e; border-radius:var(--radius-xl); width:100%; max-width:500px; overflow:hidden; box-shadow:0 40px 80px rgba(0,0,0,0.6);">
+        <div style="background:#111; padding:32px 24px 20px; text-align:right; min-height:140px; display:flex; flex-direction:column; justify-content:flex-end;">
+          <div id="fs-expr" style="font-family:var(--font-mono); font-size:14px; color:rgba(255,255,255,0.3); min-height:20px; margin-bottom:8px;"></div>
+          <div id="fs-result" style="font-family:var(--font-mono); font-size:56px; color:white; line-height:1; word-break:break-all;">0</div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(255,255,255,0.05);">
+          <button class="fs-btn fs-clear" data-val="C">C</button>
+          <button class="fs-btn fs-op" data-val="±">±</button>
+          <button class="fs-btn fs-op" data-val="%">%</button>
+          <button class="fs-btn fs-op" data-val="÷">÷</button>
+          <button class="fs-btn" data-val="7">7</button><button class="fs-btn" data-val="8">8</button><button class="fs-btn" data-val="9">9</button>
+          <button class="fs-btn fs-op" data-val="×">×</button>
+          <button class="fs-btn" data-val="4">4</button><button class="fs-btn" data-val="5">5</button><button class="fs-btn" data-val="6">6</button>
+          <button class="fs-btn fs-op" data-val="−">−</button>
+          <button class="fs-btn" data-val="1">1</button><button class="fs-btn" data-val="2">2</button><button class="fs-btn" data-val="3">3</button>
+          <button class="fs-btn fs-op" data-val="+">+</button>
+          <button class="fs-btn fs-span2" data-val="0">0</button>
+          <button class="fs-btn" data-val=".">.</button>
+          <button class="fs-btn fs-eq" data-val="=">=</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+    .fs-btn { background:#1e1e1e; color:#fff; font-family:var(--font-sans); font-size:22px; height:84px; display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; transition:background 0.1s; }
+    .fs-btn:hover { background:#2a2a2a; }
+    .fs-btn.fs-op { color:#0af; }
+    .fs-btn.fs-clear { color:#f66; }
+    .fs-btn.fs-eq { background:#fff; color:#111; font-weight:600; }
+    .fs-btn.fs-eq:hover { background:#e0e0e0; }
+    .fs-btn.fs-span2 { grid-column:span 2; }
+  </style>
+  <script>
+    const overlay = document.getElementById('fs-overlay');
+    document.getElementById('fs-btn').addEventListener('click', () => { overlay.style.display='flex'; });
+    document.getElementById('fs-close').addEventListener('click', () => { overlay.style.display='none'; });
+    (function(){
+      let display='0', expr='', op='', prev='', justEval=false;
+      const res=document.getElementById('fs-result');
+      const exprEl=document.getElementById('fs-expr');
+      function update(){ res.textContent=display.length>12?parseFloat(display).toExponential(5):display; exprEl.textContent=expr; }
+      function handle(v){
+        if(v==='C'||v==='Escape'){display='0';expr='';op='';prev='';justEval=false;}
+        else if(v==='±'){display=String(-parseFloat(display));}
+        else if(v==='%'){display=String(parseFloat(display)/100);}
+        else if(['÷','×','−','+','*','/'].includes(v)){const s=v==='*'?'×':v==='/'?'÷':v;prev=display;op=s;expr=display+' '+s;display='0';justEval=false;}
+        else if(v==='='||v==='Enter'){if(!op)return;const a=parseFloat(prev),b=parseFloat(display);let r=op==='÷'?a/b:op==='×'?a*b:op==='−'?a-b:a+b;expr=prev+' '+op+' '+display+' =';display=String(parseFloat(r.toFixed(10)));op='';justEval=true;}
+        else if(v==='.'){if(justEval){display='0.';justEval=false;}else if(!display.includes('.'))display+='.';}
+        else if(v==='Backspace'){display=display.length>1?display.slice(0,-1):'0';}
+        else if('0123456789'.includes(v)){if(display==='0'||justEval){display=v;justEval=false;}else if(display.length<14)display+=v;}
+        update();
+      }
+      document.querySelectorAll('.fs-btn').forEach(b=>b.addEventListener('click',()=>handle(b.dataset.val)));
+      document.addEventListener('keydown',e=>{if(overlay.style.display!=='none')handle(e.key);});
+    })();
+  </script>
+</Layout>

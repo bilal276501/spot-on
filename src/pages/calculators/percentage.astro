@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Percentage Calculator — Free Online | SpotOn" description="Free online percentage calculator. Find what percent of a number is, percentage change, and reverse percentage calculations.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/calculators/">Calculators</a><span class="breadcrumb-sep">›</span><span>Percentage</span></nav>
+        <h1 class="display-lg">Percentage Calculator</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Calculate percentages, discounts and percentage changes instantly.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div style="width:100%; max-width:560px; display:flex; flex-direction:column; gap:20px;">
+        <!-- Type 1 -->
+        <div class="converter-box">
+          <p class="caption-mono mb-sm">What is X% of Y?</p>
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <input type="number" id="p1-pct" placeholder="20" style="width:80px; height:44px; border:1px solid var(--color-hairline); border-radius:var(--radius-sm); padding:0 12px; font-size:16px;" />
+            <span class="body-md">% of</span>
+            <input type="number" id="p1-num" placeholder="500" style="width:100px; height:44px; border:1px solid var(--color-hairline); border-radius:var(--radius-sm); padding:0 12px; font-size:16px;" />
+            <span class="body-md">= </span>
+            <strong class="display-sm" id="p1-res" style="color:var(--color-ink);">—</strong>
+          </div>
+        </div>
+        <!-- Type 2 -->
+        <div class="converter-box">
+          <p class="caption-mono mb-sm">X is what % of Y?</p>
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <input type="number" id="p2-x" placeholder="100" style="width:100px; height:44px; border:1px solid var(--color-hairline); border-radius:var(--radius-sm); padding:0 12px; font-size:16px;" />
+            <span class="body-md">is</span>
+            <strong class="display-sm" id="p2-res" style="color:var(--color-ink);">—</strong>
+            <span class="body-md">% of</span>
+            <input type="number" id="p2-y" placeholder="500" style="width:100px; height:44px; border:1px solid var(--color-hairline); border-radius:var(--radius-sm); padding:0 12px; font-size:16px;" />
+          </div>
+        </div>
+        <!-- Type 3 -->
+        <div class="converter-box">
+          <p class="caption-mono mb-sm">Percentage change</p>
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <span class="body-md">From</span>
+            <input type="number" id="p3-from" placeholder="200" style="width:100px; height:44px; border:1px solid var(--color-hairline); border-radius:var(--radius-sm); padding:0 12px; font-size:16px;" />
+            <span class="body-md">to</span>
+            <input type="number" id="p3-to" placeholder="250" style="width:100px; height:44px; border:1px solid var(--color-hairline); border-radius:var(--radius-sm); padding:0 12px; font-size:16px;" />
+            <span class="body-md">= </span>
+            <strong class="display-sm" id="p3-res" style="color:var(--color-ink);">—</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>How to calculate percentages</h2>
+    <p>To find X% of Y: multiply Y by X and divide by 100. Example: 20% of 500 = (500 × 20) ÷ 100 = 100.</p>
+    <h2>Percentage change formula</h2>
+    <p>Percentage change = ((New − Old) ÷ Old) × 100. A positive result means an increase; negative means a decrease.</p>
+  </div></div></section>
+</Layout>
+<script>
+  function live(ids, resFn, resId){
+    ids.forEach(id=>document.getElementById(id).addEventListener('input',()=>{
+      const vals=ids.map(i=>parseFloat(document.getElementById(i).value));
+      if(vals.every(v=>!isNaN(v)&&v!==0||v===0)){
+        const r=resFn(...vals); document.getElementById(resId).textContent=isNaN(r)||!isFinite(r)?'—':r;
+      } else document.getElementById(resId).textContent='—';
+    }));
+  }
+  live(['p1-pct','p1-num'],(p,n)=>Math.round((p/100*n)*1000)/1000,'p1-res');
+  live(['p2-x','p2-y'],(x,y)=>Math.round((x/y*100)*100)/100+'%','p2-res');
+  live(['p3-from','p3-to'],(f,t)=>Math.round(((t-f)/f*100)*100)/100+'%','p3-res');
+</script>

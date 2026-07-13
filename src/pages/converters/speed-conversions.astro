@@ -1,0 +1,49 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const conversions = [
+  { from: 'MPH to km/h', formula: '× 1.60934', example: '60 mph = 96.56 km/h' },
+  { from: 'km/h to MPH', formula: '× 0.621371', example: '100 km/h = 62.14 mph' },
+  { from: 'MPH to m/s', formula: '× 0.44704', example: '60 mph = 26.82 m/s' },
+  { from: 'm/s to MPH', formula: '× 2.23694', example: '10 m/s = 22.37 mph' },
+  { from: 'Knots to km/h', formula: '× 1.852', example: '100 kn = 185.2 km/h' },
+  { from: 'km/h to Knots', formula: '× 0.539957', example: '100 km/h = 54.0 kn' },
+  { from: 'Mach to km/h', formula: '× 1234.8', example: 'Mach 1 = 1234.8 km/h' },
+  { from: 'km/h to m/s', formula: '÷ 3.6', example: '36 km/h = 10 m/s' },
+];
+---
+<Layout title="Speed Conversions — MPH, km/h, m/s, Knots Reference | SpotOn" description="Quick reference for common speed conversions: MPH to km/h, knots, m/s and Mach. With interactive speed converter.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/converters/">Converters</a><span class="breadcrumb-sep">›</span><span>Speed Conversions</span></nav>
+        <h1 class="display-lg">Speed Conversions</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Quick reference for MPH, km/h, m/s, knots and Mach conversions.</p>
+      </div>
+      <a href="/converters/speed/" class="btn-primary" style="flex-shrink:0;">Open Converter →</a>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container">
+      <div class="grid-3" style="margin-bottom:48px;">
+        {conversions.map(c => (
+          <div class="card">
+            <h2 class="body-sm-strong mb-sm">{c.from}</h2>
+            <p class="body-sm text-mute" style="font-family:var(--font-mono); font-size:13px; margin-bottom:8px;">{c.formula}</p>
+            <p class="body-sm text-body">{c.example}</p>
+          </div>
+        ))}
+      </div>
+      <div style="text-align:center;">
+        <a href="/converters/speed/" class="btn-primary">Use Interactive Speed Converter</a>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>Speed units explained</h2>
+    <p>Miles per hour (mph) is used for road speeds in the US and UK. Kilometres per hour (km/h) is used in most other countries. Metres per second (m/s) is the SI unit for speed. Knots are used in aviation and maritime navigation — one knot equals one nautical mile per hour.</p>
+    <h2>Mach numbers</h2>
+    <p>Mach 1 is the speed of sound, approximately 340 m/s or 1235 km/h at sea level and 15°C. The speed of sound varies with altitude and temperature. Mach 2 = twice the speed of sound, and so on.</p>
+    <h2>Speed of light</h2>
+    <p>The speed of light in a vacuum is exactly 299,792,458 m/s (approximately 670,616,629 mph or 1,079,252,848 km/h).</p>
+  </div></div></section>
+</Layout>

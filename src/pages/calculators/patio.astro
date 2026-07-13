@@ -1,0 +1,71 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Patio Calculator — Area, Slabs & Cost | SpotOn" description="Free online patio calculator. Calculate area, number of slabs and estimated cost for your patio or tiling project.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/calculators/">Calculators</a><span class="breadcrumb-sep">›</span><span>Patio</span></nav>
+        <h1 class="display-lg">Patio Calculator</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Calculate area, slab count and cost for your patio project.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="converter-box" style="max-width:520px; width:100%;">
+        <p class="caption-mono mb-md">Patio Dimensions</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px;">
+          <div class="converter-field"><label>Patio Width (m)</label><input type="number" id="pt-w" placeholder="4.5" step="0.1" min="0" /></div>
+          <div class="converter-field"><label>Patio Length (m)</label><input type="number" id="pt-l" placeholder="6" step="0.1" min="0" /></div>
+          <div class="converter-field"><label>Slab Width (cm)</label><input type="number" id="sl-w" placeholder="60" step="1" min="1" /></div>
+          <div class="converter-field"><label>Slab Length (cm)</label><input type="number" id="sl-l" placeholder="60" step="1" min="1" /></div>
+          <div class="converter-field"><label>Gap / Grout (mm)</label><input type="number" id="gap" placeholder="10" step="1" min="0" /></div>
+          <div class="converter-field"><label>Cost per Slab (£)</label><input type="number" id="cost" placeholder="4.50" step="0.01" min="0" /></div>
+        </div>
+        <button class="btn-primary" id="calc-patio" style="width:100%; justify-content:center;">Calculate</button>
+        <div id="patio-result" style="display:none; margin-top:20px;">
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
+            <div style="background:var(--color-primary); color:var(--color-on-primary); border-radius:var(--radius-md); padding:16px; text-align:center;">
+              <div style="font-size:28px; font-weight:600;" id="pr-area">—</div>
+              <div style="font-size:11px; font-family:var(--font-mono); opacity:0.5; margin-top:4px;">m² Area</div>
+            </div>
+            <div style="background:var(--color-primary); color:var(--color-on-primary); border-radius:var(--radius-md); padding:16px; text-align:center;">
+              <div style="font-size:28px; font-weight:600;" id="pr-slabs">—</div>
+              <div style="font-size:11px; font-family:var(--font-mono); opacity:0.5; margin-top:4px;">Slabs needed</div>
+            </div>
+            <div style="background:var(--color-primary); color:var(--color-on-primary); border-radius:var(--radius-md); padding:16px; text-align:center;">
+              <div style="font-size:28px; font-weight:600;" id="pr-cost">—</div>
+              <div style="font-size:11px; font-family:var(--font-mono); opacity:0.5; margin-top:4px;">Est. cost</div>
+            </div>
+          </div>
+          <p class="body-sm text-mute" style="margin-top:12px; text-align:center;">Includes 10% wastage allowance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>How to use the Patio Calculator</h2>
+    <p>Enter your patio dimensions, slab size and optional grout gap and cost per slab. The calculator automatically adds 10% wastage for cuts and breakages.</p>
+    <h2>Tips for patio planning</h2>
+    <p>Always order 10–15% extra slabs for cuts, breakages and future repairs. Consider the direction of laying — diagonal patterns use more material. Check local ground preparation requirements before ordering.</p>
+  </div></div></section>
+</Layout>
+<script>
+  document.getElementById('calc-patio').addEventListener('click',()=>{
+    const pw=parseFloat(document.getElementById('pt-w').value);
+    const pl=parseFloat(document.getElementById('pt-l').value);
+    const sw=parseFloat(document.getElementById('sl-w').value)/100;
+    const sl=parseFloat(document.getElementById('sl-l').value)/100;
+    const gap=parseFloat(document.getElementById('gap').value||0)/1000;
+    const cost=parseFloat(document.getElementById('cost').value||0);
+    if(!pw||!pl||!sw||!sl) return;
+    const area=pw*pl;
+    const slabArea=(sw+gap)*(sl+gap);
+    const slabs=Math.ceil((area/slabArea)*1.10);
+    document.getElementById('pr-area').textContent=area.toFixed(2)+'m²';
+    document.getElementById('pr-slabs').textContent=slabs;
+    document.getElementById('pr-cost').textContent=cost?'£'+(slabs*cost).toFixed(2):'N/A';
+    document.getElementById('patio-result').style.display='block';
+  });
+</script>

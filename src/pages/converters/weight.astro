@@ -1,0 +1,76 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Weight Converter — Kg, Pounds, Stone, Ounces | SpotOn" description="Free online weight converter. Convert between kilograms, pounds, stone, ounces, grams and tonnes instantly.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/converters/">Converters</a><span class="breadcrumb-sep">›</span><span>Weight</span></nav>
+        <h1 class="display-lg">Weight Converter</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Convert kg, pounds, stone, ounces, grams and more.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="converter-box" style="max-width:600px; width:100%;">
+        <div class="converter-row">
+          <div class="converter-field"><label>Value</label><input type="number" id="w-val" value="1" step="any" /></div>
+          <div class="converter-swap" id="w-swap" title="Swap">⇄</div>
+          <div class="converter-field"><label>Result</label><input type="number" id="w-res" readonly style="background:var(--color-canvas-soft);" /></div>
+        </div>
+        <div class="converter-unit-row">
+          <div class="converter-field"><label>From</label>
+            <select id="w-from">
+              <option value="1">Kilogram (kg)</option>
+              <option value="0.001">Gram (g)</option>
+              <option value="0.000001">Milligram (mg)</option>
+              <option value="1000">Tonne (t)</option>
+              <option value="0.453592">Pound (lb)</option>
+              <option value="0.0283495">Ounce (oz)</option>
+              <option value="6.35029">Stone (st)</option>
+              <option value="907.185">US Ton</option>
+              <option value="1016.05">UK Ton (Long)</option>
+            </select>
+          </div>
+          <div class="converter-field"><label>To</label>
+            <select id="w-to">
+              <option value="0.453592">Pound (lb)</option>
+              <option value="1">Kilogram (kg)</option>
+              <option value="0.001">Gram (g)</option>
+              <option value="6.35029">Stone (st)</option>
+              <option value="0.0283495">Ounce (oz)</option>
+              <option value="1000">Tonne (t)</option>
+              <option value="907.185">US Ton</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:24px; overflow-x:auto;">
+          <p class="caption-mono mb-sm">All conversions</p>
+          <table style="width:100%; border-collapse:collapse;">
+            <thead><tr style="border-bottom:1px solid var(--color-hairline);"><th style="text-align:left; padding:8px 0; font-size:12px; font-family:var(--font-mono); color:var(--color-mute);">Unit</th><th style="text-align:right; padding:8px 0; font-size:12px; font-family:var(--font-mono); color:var(--color-mute);">Value</th></tr></thead>
+            <tbody id="w-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>Common weight conversions</h2>
+    <p>1 kilogram = 2.20462 pounds | 1 pound = 16 ounces = 0.453592 kg | 1 stone = 14 pounds = 6.35029 kg | 1 tonne = 1000 kg = 2204.62 pounds.</p>
+  </div></div></section>
+</Layout>
+<script>
+  const units=[{n:'Kilogram (kg)',v:1},{n:'Gram (g)',v:0.001},{n:'Milligram (mg)',v:0.000001},{n:'Tonne (t)',v:1000},{n:'Pound (lb)',v:0.453592},{n:'Ounce (oz)',v:0.0283495},{n:'Stone (st)',v:6.35029},{n:'US Ton',v:907.185}];
+  function convert(){
+    const val=parseFloat(document.getElementById('w-val').value)||0;
+    const from=parseFloat(document.getElementById('w-from').value);
+    const to=parseFloat(document.getElementById('w-to').value);
+    document.getElementById('w-res').value=parseFloat((val*from/to).toPrecision(8));
+    const base=val*from;
+    document.getElementById('w-tbody').innerHTML=units.map(u=>`<tr style="border-bottom:1px solid var(--color-hairline);"><td style="padding:10px 0; font-size:14px; color:var(--color-body);">${u.n}</td><td style="padding:10px 0; font-size:14px; font-family:var(--font-mono); text-align:right;">${parseFloat((base/u.v).toPrecision(7)).toLocaleString()}</td></tr>`).join('');
+  }
+  ['w-val','w-from','w-to'].forEach(id=>document.getElementById(id).addEventListener('input',convert));
+  document.getElementById('w-swap').addEventListener('click',()=>{const f=document.getElementById('w-from').value,t=document.getElementById('w-to').value; document.getElementById('w-from').value=t; document.getElementById('w-to').value=f; document.getElementById('w-val').value=document.getElementById('w-res').value||1; convert();});
+  convert();
+</script>

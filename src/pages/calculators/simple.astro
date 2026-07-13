@@ -1,0 +1,102 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Simple Calculator Online — Free & Fullscreen | SpotOn" description="Use our free simple online calculator. Clean, fast, fullscreen-ready. No ads, no sign-up needed.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/calculators/">Calculators</a><span class="breadcrumb-sep">›</span><span>Simple Calculator</span></nav>
+        <h1 class="display-lg">Simple Calculator</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Free online calculator — fast, clean, fullscreen-ready.</p>
+      </div>
+      <a href="/calculators/fullscreen/" class="btn-secondary" style="flex-shrink:0;">⛶ Fullscreen</a>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="calc-container" id="main-calc" style="max-width:400px; width:100%;">
+        <div class="calc-display">
+          <div class="calc-expression" id="mc-expr"></div>
+          <div class="calc-result" id="mc-result" style="font-size:48px;">0</div>
+        </div>
+        <div class="calc-buttons">
+          <button class="calc-btn clear" data-val="C">C</button>
+          <button class="calc-btn op" data-val="±">±</button>
+          <button class="calc-btn op" data-val="%">%</button>
+          <button class="calc-btn op" data-val="÷">÷</button>
+          <button class="calc-btn" data-val="7">7</button>
+          <button class="calc-btn" data-val="8">8</button>
+          <button class="calc-btn" data-val="9">9</button>
+          <button class="calc-btn op" data-val="×">×</button>
+          <button class="calc-btn" data-val="4">4</button>
+          <button class="calc-btn" data-val="5">5</button>
+          <button class="calc-btn" data-val="6">6</button>
+          <button class="calc-btn op" data-val="−">−</button>
+          <button class="calc-btn" data-val="1">1</button>
+          <button class="calc-btn" data-val="2">2</button>
+          <button class="calc-btn" data-val="3">3</button>
+          <button class="calc-btn op" data-val="+">+</button>
+          <button class="calc-btn span2" data-val="0">0</button>
+          <button class="calc-btn" data-val=".">.</button>
+          <button class="calc-btn equals" data-val="=">=</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-band">
+    <div class="container">
+      <div class="content-prose">
+        <h2>About this Simple Calculator</h2>
+        <p>Our simple online calculator is designed to be the fastest, cleanest calculator on the web. No cluttered menus, no forced sign-ups, and absolutely no ads interrupting your work.</p>
+        <h2>Keyboard shortcuts</h2>
+        <p>Use your keyboard for even faster input: number keys (0–9), operators (+, -, *, /), Enter for equals, Escape to clear, and Backspace to delete the last digit.</p>
+        <h2>Fullscreen mode</h2>
+        <p>Click "Fullscreen" above to expand the calculator to fill your entire screen — perfect for use on large monitors, in presentations, or when you need total focus.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  (function() {
+    let display = '0', expr = '', op = '', prev = '', justEval = false;
+    const res = document.getElementById('mc-result');
+    const exprEl = document.getElementById('mc-expr');
+    function update() {
+      const n = parseFloat(display);
+      res.textContent = display.length > 14 ? n.toExponential(6) : display;
+      exprEl.textContent = expr;
+    }
+    function handle(v) {
+      if (v === 'C' || v === 'Escape') { display='0'; expr=''; op=''; prev=''; justEval=false; }
+      else if (v === '±') { display = String(-parseFloat(display)); }
+      else if (v === '%') { display = String(parseFloat(display)/100); }
+      else if (['÷','×','−','+','*','/'].includes(v)) {
+        const sym = v==='*'?'×':v==='/'?'÷':v;
+        prev=display; op=sym; expr=display+' '+sym; display='0'; justEval=false;
+      }
+      else if (v === '=' || v === 'Enter') {
+        if (!op) return;
+        const a=parseFloat(prev), b=parseFloat(display);
+        let r = op==='÷'?a/b:op==='×'?a*b:op==='−'?a-b:a+b;
+        expr=prev+' '+op+' '+display+' =';
+        display=String(parseFloat(r.toFixed(10)));
+        op=''; justEval=true;
+      }
+      else if (v === 'Backspace') { display = display.length>1 ? display.slice(0,-1) : '0'; }
+      else if (v === '.') {
+        if (justEval){display='0.';justEval=false;}
+        else if (!display.includes('.')) display+='.';
+      }
+      else if ('0123456789'.includes(v)) {
+        if (display==='0'||justEval){display=v;justEval=false;}
+        else if (display.length<15) display+=v;
+      }
+      update();
+    }
+    document.querySelectorAll('#main-calc .calc-btn').forEach(btn => btn.addEventListener('click',()=>handle(btn.dataset.val)));
+    document.addEventListener('keydown', e => { if (!['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) handle(e.key); });
+  })();
+</script>

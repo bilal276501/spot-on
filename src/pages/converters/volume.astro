@@ -1,0 +1,76 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Volume Converter — Litres, Gallons, Cups, ml | SpotOn" description="Free online volume converter. Convert litres, millilitres, gallons, pints, cups, fluid ounces and more.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/converters/">Converters</a><span class="breadcrumb-sep">›</span><span>Volume</span></nav>
+        <h1 class="display-lg">Volume Converter</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Convert litres, gallons, pints, cups, fluid ounces and more.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="converter-box" style="max-width:600px; width:100%;">
+        <div class="converter-row">
+          <div class="converter-field"><label>Value</label><input type="number" id="v-val" value="1" step="any" /></div>
+          <div class="converter-swap" id="v-swap">⇄</div>
+          <div class="converter-field"><label>Result</label><input type="number" id="v-res" readonly style="background:var(--color-canvas-soft);" /></div>
+        </div>
+        <div class="converter-unit-row">
+          <div class="converter-field"><label>From</label>
+            <select id="v-from">
+              <option value="1">Litre (L)</option>
+              <option value="0.001">Millilitre (mL)</option>
+              <option value="0.000001">Cubic centimetre (cm³)</option>
+              <option value="3.78541">US Gallon</option>
+              <option value="4.54609">UK Gallon</option>
+              <option value="0.473176">US Pint</option>
+              <option value="0.568261">UK Pint</option>
+              <option value="0.236588">US Cup</option>
+              <option value="0.0295735">US Fluid Ounce</option>
+              <option value="0.0284131">UK Fluid Ounce</option>
+              <option value="0.0014787">US Tablespoon</option>
+              <option value="0.000492892">US Teaspoon</option>
+            </select>
+          </div>
+          <div class="converter-field"><label>To</label>
+            <select id="v-to">
+              <option value="3.78541">US Gallon</option>
+              <option value="1">Litre (L)</option>
+              <option value="0.001">Millilitre (mL)</option>
+              <option value="4.54609">UK Gallon</option>
+              <option value="0.473176">US Pint</option>
+              <option value="0.568261">UK Pint</option>
+              <option value="0.236588">US Cup</option>
+              <option value="0.0295735">US Fluid Ounce</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:24px;"><p class="caption-mono mb-sm">All conversions</p>
+          <table style="width:100%;border-collapse:collapse;"><thead><tr style="border-bottom:1px solid var(--color-hairline);"><th style="text-align:left;padding:8px 0;font-size:12px;font-family:var(--font-mono);color:var(--color-mute);">Unit</th><th style="text-align:right;padding:8px 0;font-size:12px;font-family:var(--font-mono);color:var(--color-mute);">Value</th></tr></thead>
+          <tbody id="v-tbody"></tbody></table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>Volume conversion reference</h2>
+    <p>1 litre = 0.264 US gallons = 0.220 UK gallons = 4.227 US cups = 33.81 US fl oz. 1 US gallon = 3.785 litres. 1 UK (Imperial) gallon = 4.546 litres.</p>
+  </div></div></section>
+</Layout>
+<script>
+  const units=[{n:'Litre (L)',v:1},{n:'Millilitre (mL)',v:0.001},{n:'US Gallon',v:3.78541},{n:'UK Gallon',v:4.54609},{n:'US Pint',v:0.473176},{n:'UK Pint',v:0.568261},{n:'US Cup',v:0.236588},{n:'US Fl Oz',v:0.0295735},{n:'UK Fl Oz',v:0.0284131},{n:'Tablespoon (US)',v:0.0148},{n:'Teaspoon (US)',v:0.00493}];
+  function convert(){
+    const val=parseFloat(document.getElementById('v-val').value)||0;
+    const from=parseFloat(document.getElementById('v-from').value),to=parseFloat(document.getElementById('v-to').value);
+    document.getElementById('v-res').value=parseFloat((val*from/to).toPrecision(8));
+    const base=val*from;
+    document.getElementById('v-tbody').innerHTML=units.map(u=>`<tr style="border-bottom:1px solid var(--color-hairline);"><td style="padding:10px 0;font-size:14px;color:var(--color-body);">${u.n}</td><td style="padding:10px 0;font-size:14px;font-family:var(--font-mono);text-align:right;">${parseFloat((base/u.v).toPrecision(7)).toLocaleString()}</td></tr>`).join('');
+  }
+  ['v-val','v-from','v-to'].forEach(id=>document.getElementById(id).addEventListener('input',convert));
+  document.getElementById('v-swap').addEventListener('click',()=>{const f=document.getElementById('v-from').value,t=document.getElementById('v-to').value; document.getElementById('v-from').value=t; document.getElementById('v-to').value=f; document.getElementById('v-val').value=document.getElementById('v-res').value||1; convert();});
+  convert();
+</script>

@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Page Not Found — SpotOn Calculator" description="The page you're looking for doesn't exist.">
+  <section style="min-height:70vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:48px 24px;">
+    <div>
+      <div style="font-family:var(--font-mono); font-size:80px; font-weight:600; color:var(--color-hairline); line-height:1; margin-bottom:24px;">404</div>
+      <h1 class="display-lg mb-md">Page not found</h1>
+      <p class="body-md text-body mb-xl" style="max-width:400px; margin-left:auto; margin-right:auto;">
+        This page doesn't exist. Try one of our calculators or converters instead.
+      </p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a href="/" class="btn-primary">Go home</a>
+        <a href="/calculators/" class="btn-secondary">All calculators</a>
+        <a href="/converters/" class="btn-secondary">All converters</a>
+      </div>
+    </div>
+  </section>
+</Layout>

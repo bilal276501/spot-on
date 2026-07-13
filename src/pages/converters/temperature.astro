@@ -1,0 +1,56 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Temperature Converter — Celsius, Fahrenheit, Kelvin | SpotOn" description="Free online temperature converter. Instantly convert between Celsius, Fahrenheit, Kelvin and Rankine.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/converters/">Converters</a><span class="breadcrumb-sep">›</span><span>Temperature</span></nav>
+        <h1 class="display-lg">Temperature Converter</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Convert Celsius, Fahrenheit, Kelvin and Rankine instantly.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="converter-box" style="max-width:600px; width:100%;">
+        <div class="converter-row">
+          <div class="converter-field"><label>Temperature</label><input type="number" id="t-val" value="100" step="any" /></div>
+          <div class="converter-swap" id="t-swap">⇄</div>
+          <div class="converter-field"><label>Result</label><input type="number" id="t-res" readonly style="background:var(--color-canvas-soft);" /></div>
+        </div>
+        <div class="converter-unit-row">
+          <div class="converter-field"><label>From</label>
+            <select id="t-from"><option value="C">Celsius (°C)</option><option value="F">Fahrenheit (°F)</option><option value="K">Kelvin (K)</option><option value="R">Rankine (°R)</option></select>
+          </div>
+          <div class="converter-field"><label>To</label>
+            <select id="t-to"><option value="F">Fahrenheit (°F)</option><option value="C">Celsius (°C)</option><option value="K">Kelvin (K)</option><option value="R">Rankine (°R)</option></select>
+          </div>
+        </div>
+        <div style="margin-top:24px; display:grid; grid-template-columns:repeat(2,1fr); gap:12px;" id="temp-cards"></div>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>Temperature conversion formulas</h2>
+    <p>°C to °F: multiply by 9/5 then add 32. °F to °C: subtract 32 then multiply by 5/9. Celsius to Kelvin: add 273.15. Kelvin to Celsius: subtract 273.15.</p>
+    <h2>Key reference temperatures</h2>
+    <p>Water freezes at 0°C / 32°F / 273.15K. Water boils at 100°C / 212°F / 373.15K. Normal body temperature is approximately 37°C / 98.6°F. Absolute zero is 0K / −273.15°C / −459.67°F.</p>
+  </div></div></section>
+</Layout>
+<script>
+  function toC(val,u){ if(u==='C')return val; if(u==='F')return (val-32)*5/9; if(u==='K')return val-273.15; if(u==='R')return (val-491.67)*5/9; }
+  function fromC(val,u){ if(u==='C')return val; if(u==='F')return val*9/5+32; if(u==='K')return val+273.15; if(u==='R')return (val+273.15)*9/5; }
+  const refs=[{label:'Celsius (°C)',u:'C'},{label:'Fahrenheit (°F)',u:'F'},{label:'Kelvin (K)',u:'K'},{label:'Rankine (°R)',u:'R'}];
+  function convert(){
+    const val=parseFloat(document.getElementById('t-val').value);
+    if(isNaN(val))return;
+    const from=document.getElementById('t-from').value, to=document.getElementById('t-to').value;
+    const celsius=toC(val,from);
+    document.getElementById('t-res').value=parseFloat(fromC(celsius,to).toFixed(4));
+    document.getElementById('temp-cards').innerHTML=refs.map(r=>`<div style="background:var(--color-canvas-soft-2); border-radius:var(--radius-md); padding:16px;"><div class="caption-mono" style="color:var(--color-mute);">${r.label}</div><div style="font-size:28px; font-weight:600; margin-top:4px; letter-spacing:-1px;">${parseFloat(fromC(celsius,r.u).toFixed(3))}</div></div>`).join('');
+  }
+  ['t-val','t-from','t-to'].forEach(id=>document.getElementById(id).addEventListener('input',convert));
+  document.getElementById('t-swap').addEventListener('click',()=>{ const f=document.getElementById('t-from').value,t=document.getElementById('t-to').value; document.getElementById('t-from').value=t; document.getElementById('t-to').value=f; document.getElementById('t-val').value=document.getElementById('t-res').value||0; convert(); });
+  convert();
+</script>

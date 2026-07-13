@@ -1,0 +1,82 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const rings = [
+  {uk:'A',us:'½',eu:'38',diameter:'12.0mm'},{uk:'B',us:'1',eu:'39',diameter:'12.4mm'},{uk:'C',us:'1½',eu:'40',diameter:'12.7mm'},
+  {uk:'D',us:'2',eu:'41',diameter:'13.0mm'},{uk:'E',us:'2½',eu:'42',diameter:'13.4mm'},{uk:'F',us:'3',eu:'43',diameter:'13.7mm'},
+  {uk:'G',us:'3½',eu:'44',diameter:'14.0mm'},{uk:'H',us:'4',eu:'45',diameter:'14.3mm'},{uk:'I',us:'4½',eu:'46',diameter:'14.7mm'},
+  {uk:'J',us:'5',eu:'47',diameter:'15.0mm'},{uk:'K',us:'5½',eu:'48.5',diameter:'15.3mm'},{uk:'L',us:'6',eu:'49',diameter:'15.7mm'},
+  {uk:'M',us:'6½',eu:'50',diameter:'16.0mm'},{uk:'N',us:'7',eu:'51',diameter:'16.3mm'},{uk:'O',us:'7½',eu:'52',diameter:'16.7mm'},
+  {uk:'P',us:'8',eu:'53',diameter:'17.0mm'},{uk:'Q',us:'8½',eu:'54',diameter:'17.3mm'},{uk:'R',us:'9',eu:'55',diameter:'17.6mm'},
+  {uk:'S',us:'9½',eu:'56',diameter:'17.9mm'},{uk:'T',us:'10',eu:'57',diameter:'18.2mm'},{uk:'U',us:'10½',eu:'58',diameter:'18.6mm'},
+  {uk:'V',us:'11',eu:'59',diameter:'18.9mm'},{uk:'W',us:'11½',eu:'60',diameter:'19.2mm'},{uk:'X',us:'12',eu:'61',diameter:'19.5mm'},
+  {uk:'Y',us:'12½',eu:'62',diameter:'19.8mm'},{uk:'Z',us:'13',eu:'63',diameter:'20.1mm'},
+];
+---
+<Layout title="Ring Size Converter — UK, US, EU Chart | SpotOn" description="Free ring size conversion chart. Convert between UK, US and EU ring sizes, with diameter measurements in mm.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/converters/">Converters</a><span class="breadcrumb-sep">›</span><span>Ring Size</span></nav>
+        <h1 class="display-lg">Ring Size Converter</h1>
+        <p class="body-md text-body" style="margin-top:8px;">UK, US and EU ring size chart with diameter measurements.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="converter-box" style="max-width:600px; width:100%;">
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:20px;">
+          <div class="converter-field"><label>UK Size</label>
+            <select id="rs-uk">
+              {rings.map(r=><option value={r.uk}>{r.uk}</option>)}
+            </select>
+          </div>
+          <div class="converter-field"><label>US Size</label><input id="rs-us" readonly style="background:var(--color-canvas-soft);" /></div>
+          <div class="converter-field"><label>EU Size</label><input id="rs-eu" readonly style="background:var(--color-canvas-soft);" /></div>
+        </div>
+        <div style="background:var(--color-canvas-soft-2); border-radius:var(--radius-md); padding:16px; display:flex; gap:24px; align-items:center; margin-bottom:24px;">
+          <span class="caption-mono">Diameter</span>
+          <span class="display-md" id="rs-dia">—</span>
+        </div>
+        <p class="caption-mono mb-sm">Full Size Chart</p>
+        <div style="overflow-x:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:14px;">
+            <thead><tr style="border-bottom:2px solid var(--color-hairline);">
+              <th style="padding:10px 8px; text-align:left; font-family:var(--font-mono); font-size:11px; color:var(--color-mute);">UK</th>
+              <th style="padding:10px 8px; text-align:left; font-family:var(--font-mono); font-size:11px; color:var(--color-mute);">US</th>
+              <th style="padding:10px 8px; text-align:left; font-family:var(--font-mono); font-size:11px; color:var(--color-mute);">EU</th>
+              <th style="padding:10px 8px; text-align:left; font-family:var(--font-mono); font-size:11px; color:var(--color-mute);">Diameter</th>
+            </tr></thead>
+            <tbody>
+              {rings.map(r=><tr style="border-bottom:1px solid var(--color-hairline);" class="ring-row" data-uk={r.uk}>
+                <td style="padding:8px; font-weight:500;">{r.uk}</td>
+                <td style="padding:8px; color:var(--color-body);">{r.us}</td>
+                <td style="padding:8px; color:var(--color-body);">{r.eu}</td>
+                <td style="padding:8px; font-family:var(--font-mono); color:var(--color-body);">{r.diameter}</td>
+              </tr>)}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>How to measure ring size</h2>
+    <p>The most accurate method is to use a ring sizer from a jeweller. Alternatively, measure the internal diameter of a ring that fits well using a ruler (in mm), then match it to the chart above.</p>
+    <h2>UK vs US vs EU sizing</h2>
+    <p>UK ring sizes use letters (A–Z). US sizes use numbers (½–13). EU sizes use the internal circumference in mm. Our chart above shows all three systems side by side.</p>
+  </div></div></section>
+</Layout>
+<script>
+  const data = {A:{us:'½',eu:'38',dia:'12.0mm'},B:{us:'1',eu:'39',dia:'12.4mm'},C:{us:'1½',eu:'40',dia:'12.7mm'},D:{us:'2',eu:'41',dia:'13.0mm'},E:{us:'2½',eu:'42',dia:'13.4mm'},F:{us:'3',eu:'43',dia:'13.7mm'},G:{us:'3½',eu:'44',dia:'14.0mm'},H:{us:'4',eu:'45',dia:'14.3mm'},I:{us:'4½',eu:'46',dia:'14.7mm'},J:{us:'5',eu:'47',dia:'15.0mm'},K:{us:'5½',eu:'48.5',dia:'15.3mm'},L:{us:'6',eu:'49',dia:'15.7mm'},M:{us:'6½',eu:'50',dia:'16.0mm'},N:{us:'7',eu:'51',dia:'16.3mm'},O:{us:'7½',eu:'52',dia:'16.7mm'},P:{us:'8',eu:'53',dia:'17.0mm'},Q:{us:'8½',eu:'54',dia:'17.3mm'},R:{us:'9',eu:'55',dia:'17.6mm'},S:{us:'9½',eu:'56',dia:'17.9mm'},T:{us:'10',eu:'57',dia:'18.2mm'},U:{us:'10½',eu:'58',dia:'18.6mm'},V:{us:'11',eu:'59',dia:'18.9mm'},W:{us:'11½',eu:'60',dia:'19.2mm'},X:{us:'12',eu:'61',dia:'19.5mm'},Y:{us:'12½',eu:'62',dia:'19.8mm'},Z:{us:'13',eu:'63',dia:'20.1mm'}};
+  function update(){
+    const uk=document.getElementById('rs-uk').value;
+    const d=data[uk];
+    document.getElementById('rs-us').value=d.us;
+    document.getElementById('rs-eu').value=d.eu;
+    document.getElementById('rs-dia').textContent=d.dia;
+    document.querySelectorAll('.ring-row').forEach(r=>{ r.style.background=r.dataset.uk===uk?'var(--color-canvas-soft-2)':''; });
+  }
+  document.getElementById('rs-uk').addEventListener('change',update);
+  update();
+</script>

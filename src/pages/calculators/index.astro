@@ -1,0 +1,38 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const calcs = [
+  { href:'/calculators/simple/', icon:'🖩', title:'Simple Calculator', desc:'Fast everyday arithmetic calculator.' },
+  { href:'/calculators/scientific/', icon:'🔬', title:'Scientific Calculator', desc:'Trig, logs, powers and advanced functions.' },
+  { href:'/calculators/fullscreen/', icon:'⛶', title:'Fullscreen Calculator', desc:'Distraction-free fullscreen mode.' },
+  { href:'/calculators/abacus/', icon:'🧮', title:'Online Abacus', desc:'Interactive abacus for learning.' },
+  { href:'/calculators/bmi/', icon:'⚖️', title:'BMI Calculator', desc:'Body Mass Index — metric & imperial.' },
+  { href:'/calculators/percentage/', icon:'%', title:'Percentage Calculator', desc:'Percentages, discounts, changes.' },
+  { href:'/calculators/patio/', icon:'🏗️', title:'Patio Calculator', desc:'Area and materials for patio projects.' },
+  { href:'/calculators/darts/', icon:'🎯', title:'Darts Calculator', desc:'Scorer and checkout calculator.' },
+  { href:'/calculators/maths/', icon:'∑', title:'Maths Calculator', desc:'Algebra, equations and fractions.' },
+];
+---
+<Layout title="Free Online Calculators — SpotOn Calculator" description="All our free online calculators: simple, scientific, BMI, percentage, patio, darts, abacus and maths.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><span>Calculators</span></nav>
+        <h1 class="display-lg">Online Calculators</h1>
+        <p class="body-md text-body" style="margin-top:8px;max-width:480px;">All our free calculators in one place. No sign-up, no ads, instant results.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="grid-3">
+        {calcs.map(c => (
+          <a href={c.href} class="card card-link">
+            <div class="card-icon card-icon-blue" style="font-size:22px;">{c.icon}</div>
+            <h2 class="body-sm-strong mb-sm">{c.title}</h2>
+            <p class="body-sm text-body">{c.desc}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

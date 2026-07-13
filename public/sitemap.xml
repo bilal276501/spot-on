@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://spotoncalculator.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://spotoncalculator.com/calculators/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://spotoncalculator.com/calculators/simple/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://spotoncalculator.com/calculators/scientific/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://spotoncalculator.com/calculators/fullscreen/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spotoncalculator.com/calculators/bmi/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://spotoncalculator.com/calculators/percentage/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://spotoncalculator.com/calculators/darts/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spotoncalculator.com/calculators/patio/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spotoncalculator.com/calculators/maths/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spotoncalculator.com/calculators/abacus/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/length/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/length-conversions/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/weight/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/weight-conversions/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/temperature/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/temperature-conversions/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/speed/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/speed-conversions/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/volume/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/time/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/time-conversions/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/ring-size/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+</urlset>

@@ -1,0 +1,45 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const conversions = [
+  { from: 'Minutes to Seconds', formula: '× 60', example: '5 min = 300 s' },
+  { from: 'Hours to Minutes', formula: '× 60', example: '2 hr = 120 min' },
+  { from: 'Hours to Seconds', formula: '× 3600', example: '1 hr = 3600 s' },
+  { from: 'Days to Hours', formula: '× 24', example: '1 day = 24 hrs' },
+  { from: 'Weeks to Days', formula: '× 7', example: '1 week = 7 days' },
+  { from: 'Years to Days', formula: '× 365.25', example: '1 yr ≈ 365.25 days' },
+  { from: 'Days to Seconds', formula: '× 86,400', example: '1 day = 86,400 s' },
+  { from: 'Years to Hours', formula: '× 8766', example: '1 yr ≈ 8766 hrs' },
+];
+---
+<Layout title="Time Conversions — Seconds, Minutes, Hours, Days | SpotOn" description="Quick reference for common time conversions: seconds to minutes, hours, days, weeks and years. With interactive converter.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/converters/">Converters</a><span class="breadcrumb-sep">›</span><span>Time Conversions</span></nav>
+        <h1 class="display-lg">Time Conversions</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Quick reference for converting between seconds, minutes, hours, days and years.</p>
+      </div>
+      <a href="/converters/time/" class="btn-primary" style="flex-shrink:0;">Open Converter →</a>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container">
+      <div class="grid-3" style="margin-bottom:48px;">
+        {conversions.map(c => (
+          <div class="card">
+            <h2 class="body-sm-strong mb-sm">{c.from}</h2>
+            <p class="body-sm text-mute" style="font-family:var(--font-mono); font-size:13px; margin-bottom:8px;">{c.formula}</p>
+            <p class="body-sm text-body">{c.example}</p>
+          </div>
+        ))}
+      </div>
+      <div style="text-align:center;"><a href="/converters/time/" class="btn-primary">Use Interactive Time Converter</a></div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>Time unit reference</h2>
+    <p>1 minute = 60 seconds. 1 hour = 60 minutes = 3,600 seconds. 1 day = 24 hours = 86,400 seconds. 1 week = 7 days = 604,800 seconds. 1 year = 365.25 days (accounting for leap years) = 31,557,600 seconds.</p>
+    <h2>How many seconds in a year?</h2>
+    <p>Exactly 31,536,000 seconds in a regular year (365 days), or 31,622,400 in a leap year (366 days). Using the average of 365.25 days gives 31,557,600 seconds per year.</p>
+  </div></div></section>
+</Layout>

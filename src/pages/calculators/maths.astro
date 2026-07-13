@@ -1,0 +1,92 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Maths Calculator — Equations & Fractions | SpotOn" description="Free online maths calculator. Solve equations, calculate fractions, LCM, GCD, prime factorisation and more.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/calculators/">Calculators</a><span class="breadcrumb-sep">›</span><span>Maths</span></nav>
+        <h1 class="display-lg">Maths Calculator</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Fractions, LCM, GCD, factors and more maths tools.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div style="width:100%; max-width:560px; display:flex; flex-direction:column; gap:16px;">
+        <!-- Fraction calculator -->
+        <div class="converter-box">
+          <p class="caption-mono mb-md">Fraction Calculator</p>
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <input id="f-a-n" type="number" placeholder="1" style="width:64px; height:40px; border:1px solid var(--color-hairline); border-radius:var(--radius-sm); padding:0 8px; font-size:16px; text-align:center;" />
+              <div style="height:1px; width:50px; background:var(--color-ink);"></div>
+              <input id="f-a-d" type="number" placeholder="2" style="width:64px; height:40px; border:1px solid var(--color-hairline); border-radius:var(--radius-sm); padding:0 8px; font-size:16px; text-align:center;" />
+            </div>
+            <select id="f-op" style="height:40px; border:1px solid var(--color-hairline); border-radius:var(--radius-sm); padding:0 8px; font-size:16px;">
+              <option>+</option><option>−</option><option>×</option><option>÷</option>
+            </select>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <input id="f-b-n" type="number" placeholder="1" style="width:64px; height:40px; border:1px solid var(--color-hairline); border-radius:var(--radius-sm); padding:0 8px; font-size:16px; text-align:center;" />
+              <div style="height:1px; width:50px; background:var(--color-ink);"></div>
+              <input id="f-b-d" type="number" placeholder="3" style="width:64px; height:40px; border:1px solid var(--color-hairline); border-radius:var(--radius-sm); padding:0 8px; font-size:16px; text-align:center;" />
+            </div>
+            <button class="btn-primary-sm" id="calc-frac">=</button>
+            <div id="f-res" style="font-size:20px; font-weight:600;">—</div>
+          </div>
+        </div>
+        <!-- GCD / LCM -->
+        <div class="converter-box">
+          <p class="caption-mono mb-md">GCD & LCM</p>
+          <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+            <div class="converter-field" style="width:100px;"><label>Number A</label><input id="gl-a" type="number" placeholder="12" /></div>
+            <div class="converter-field" style="width:100px;"><label>Number B</label><input id="gl-b" type="number" placeholder="18" /></div>
+            <button class="btn-primary-sm" id="calc-gl">Calculate</button>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:24px;">
+            <div><span class="caption-mono">GCD</span><div class="display-sm" id="gl-gcd">—</div></div>
+            <div><span class="caption-mono">LCM</span><div class="display-sm" id="gl-lcm">—</div></div>
+          </div>
+        </div>
+        <!-- Prime factors -->
+        <div class="converter-box">
+          <p class="caption-mono mb-md">Prime Factorisation</p>
+          <div style="display:flex; gap:12px; align-items:flex-end;">
+            <div class="converter-field" style="flex:1;"><label>Number</label><input id="pf-n" type="number" placeholder="360" /></div>
+            <button class="btn-primary-sm" id="calc-pf">Factorise</button>
+          </div>
+          <div style="margin-top:12px;" id="pf-res" class="display-sm">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+<script>
+  function gcd(a,b){ return b===0?a:gcd(b,a%b); }
+  document.getElementById('calc-frac').addEventListener('click',()=>{
+    const an=parseInt(document.getElementById('f-a-n').value)||0, ad=parseInt(document.getElementById('f-a-d').value)||1;
+    const bn=parseInt(document.getElementById('f-b-n').value)||0, bd=parseInt(document.getElementById('f-b-d').value)||1;
+    const op=document.getElementById('f-op').value;
+    let rn, rd;
+    if(op==='+'){rn=an*bd+bn*ad; rd=ad*bd;}
+    else if(op==='−'){rn=an*bd-bn*ad; rd=ad*bd;}
+    else if(op==='×'){rn=an*bn; rd=ad*bd;}
+    else{rn=an*bd; rd=ad*bn;}
+    const g=gcd(Math.abs(rn),Math.abs(rd));
+    document.getElementById('f-res').textContent=`${rn/g}/${rd/g} (≈${(rn/rd).toFixed(4)})`;
+  });
+  document.getElementById('calc-gl').addEventListener('click',()=>{
+    const a=parseInt(document.getElementById('gl-a').value), b=parseInt(document.getElementById('gl-b').value);
+    if(!a||!b) return;
+    const g=gcd(Math.abs(a),Math.abs(b));
+    document.getElementById('gl-gcd').textContent=g;
+    document.getElementById('gl-lcm').textContent=Math.abs(a*b)/g;
+  });
+  document.getElementById('calc-pf').addEventListener('click',()=>{
+    let n=parseInt(document.getElementById('pf-n').value); if(!n||n<2) return;
+    const factors=[]; let d=2;
+    while(n>1){ while(n%d===0){factors.push(d);n/=d;} d++; }
+    const map={};factors.forEach(f=>{map[f]=(map[f]||0)+1;});
+    document.getElementById('pf-res').textContent=Object.entries(map).map(([b,e])=>e>1?`${b}^${e}`:b).join(' × ');
+  });
+</script>

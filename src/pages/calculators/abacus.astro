@@ -1,0 +1,85 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Online Abacus — Interactive | SpotOn" description="Free interactive online abacus. Learn to count and calculate using a traditional abacus simulation.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/calculators/">Calculators</a><span class="breadcrumb-sep">›</span><span>Abacus</span></nav>
+        <h1 class="display-lg">Online Abacus</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Interactive abacus — click beads to count and calculate.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="converter-box" style="max-width:600px; width:100%;">
+        <div id="abacus" style="background:#171717; border-radius:var(--radius-md); padding:20px 16px; margin-bottom:16px; position:relative;"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div><span class="caption-mono">Value: </span><span class="display-md" id="ab-value">0</span></div>
+          <button class="btn-secondary" id="ab-reset">Reset</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>How to use the online abacus</h2>
+    <p>Click on beads to move them. Beads moved toward the centre bar count toward the total. Each rod represents a decimal place: ones, tens, hundreds, thousands and so on. The top bead (heaven bead) counts as 5; bottom beads (earth beads) count as 1 each.</p>
+  </div></div></section>
+</Layout>
+<style>
+  .ab-rod { display:flex; flex-direction:column; align-items:center; gap:0; }
+  .ab-bead { width:32px; height:24px; border-radius:50%; cursor:pointer; transition:background 0.15s, transform 0.15s; margin:2px 0; }
+  .ab-bead.heaven { background:#f59e0b; }
+  .ab-bead.earth { background:#e2e8f0; }
+  .ab-bead.active { background:#50e3c2; transform:scaleX(1.1); }
+  .ab-divider { width:100%; height:2px; background:rgba(255,255,255,0.3); margin:6px 0; }
+</style>
+<script>
+  const RODS = 8;
+  const state = Array(RODS).fill(null).map(()=>({heaven:false,earth:[false,false,false,false]}));
+  function getValue(){
+    return state.reduce((sum,rod,i)=>{
+      const mul=Math.pow(10,RODS-1-i);
+      const h=rod.heaven?5:0, e=rod.earth.filter(Boolean).length;
+      return sum+(h+e)*mul;
+    },0);
+  }
+  function render(){
+    const ab=document.getElementById('abacus');
+    ab.innerHTML='';
+    const row=document.createElement('div');
+    row.style.cssText='display:flex; gap:8px; justify-content:center;';
+    state.forEach((rod,ri)=>{
+      const col=document.createElement('div');
+      col.className='ab-rod';
+      // heaven bead
+      const hb=document.createElement('div');
+      hb.className='ab-bead heaven'+(rod.heaven?' active':'');
+      hb.style.cssText='width:36px; height:26px; border-radius:50%; cursor:pointer; margin:2px 0; transition:background 0.15s;';
+      hb.style.background=rod.heaven?'#50e3c2':'#f59e0b';
+      hb.addEventListener('click',()=>{ state[ri].heaven=!state[ri].heaven; render(); });
+      col.appendChild(hb);
+      const div=document.createElement('div');
+      div.style.cssText='width:36px; height:3px; background:rgba(255,255,255,0.4); margin:4px 0; border-radius:2px;';
+      col.appendChild(div);
+      // earth beads
+      rod.earth.forEach((active,ei)=>{
+        const eb=document.createElement('div');
+        eb.style.cssText=`width:36px; height:26px; border-radius:50%; cursor:pointer; margin:2px 0; transition:background 0.15s; background:${active?'#50e3c2':'rgba(255,255,255,0.3)'};`;
+        eb.addEventListener('click',()=>{ state[ri].earth[ei]=!state[ri].earth[ei]; render(); });
+        col.appendChild(eb);
+      });
+      // place label
+      const lbl=document.createElement('div');
+      lbl.style.cssText='font-family:monospace; font-size:10px; color:rgba(255,255,255,0.4); margin-top:6px; text-align:center;';
+      lbl.textContent=['10M','1M','100K','10K','1K','100','10','1'][ri];
+      col.appendChild(lbl);
+      row.appendChild(col);
+    });
+    ab.appendChild(row);
+    document.getElementById('ab-value').textContent=getValue().toLocaleString();
+  }
+  document.getElementById('ab-reset').addEventListener('click',()=>{ state.forEach(r=>{r.heaven=false;r.earth=[false,false,false,false];}); render(); });
+  render();
+</script>
