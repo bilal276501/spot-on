@@ -70,7 +70,7 @@ import Layout from '../../layouts/Layout.astro';
         if(v==='C'||v==='Escape'){display='0';expr='';op='';prev='';justEval=false;}
         else if(v==='±'){display=String(-parseFloat(display));}
         else if(v==='%'){display=String(parseFloat(display)/100);}
-        else if(['÷','×','−','+','*','/'].includes(v)){const s=v==='*'?'×':v==='/'?'÷':v;prev=display;op=s;expr=display+' '+s;display='0';justEval=false;}
+        else if(['÷','×','−','+','*','/','-'].includes(v)){const s=v==='*'?'×':v==='/'?'÷':v==='-'?'−':v;prev=display;op=s;expr=display+' '+s;display='0';justEval=false;}
         else if(v==='='||v==='Enter'){if(!op)return;const a=parseFloat(prev),b=parseFloat(display);let r=op==='÷'?a/b:op==='×'?a*b:op==='−'?a-b:a+b;expr=prev+' '+op+' '+display+' =';display=String(parseFloat(r.toFixed(10)));op='';justEval=true;}
         else if(v==='.'){if(justEval){display='0.';justEval=false;}else if(!display.includes('.'))display+='.';}
         else if(v==='Backspace'){display=display.length>1?display.slice(0,-1):'0';}

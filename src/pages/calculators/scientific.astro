@@ -227,8 +227,8 @@ import Layout from '../../layouts/Layout.astro';
     if(v==='C'||v==='Escape'){display='0';expr='';op='';prev='';justEval=false;}
     else if(v==='±'){display=String(-parseFloat(display));}
     else if(v==='%'){display=String(parseFloat(display)/100);}
-    else if(['÷','×','−','+','*','/'].includes(v)){
-      const sym=v==='*'?'×':v==='/'?'÷':v;
+    else if(['÷','×','−','+','*','/','-'].includes(v)){
+      const sym=v==='*'?'×':v==='/'?'÷':v==='-'?'−':v;
       prev=display;op=sym;expr=display+' '+sym;display='0';justEval=false;
     }
     else if(v==='='||v==='Enter'){
