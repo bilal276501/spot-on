@@ -13,57 +13,57 @@ import Layout from '../../layouts/Layout.astro';
   </section>
   <section class="section section-soft">
     <div class="container" style="display:flex; justify-content:center;">
-      <div id="sci-calc" style="background:var(--color-canvas);border-radius:var(--radius-xl);box-shadow:var(--shadow-4);overflow:hidden;width:100%;max-width:480px;">
-        <div class="calc-display" style="min-height:100px;">
-          <div class="calc-expression" id="sc-expr" style="font-size:12px; min-height:18px;"></div>
-          <div class="calc-result" id="sc-result" style="font-size:36px;">0</div>
+      <div id="sci-calc">
+        <div class="sc-display">
+          <div class="sc-expr" id="sc-expr"></div>
+          <div class="sc-result" id="sc-result">0</div>
         </div>
-        <div id="sc-mode" style="display:flex;gap:1px;background:var(--color-hairline);border-top:1px solid var(--color-hairline);">
-          <button class="calc-btn" id="btn-deg" style="font-size:13px;height:40px;font-family:var(--font-mono);background:var(--color-primary);color:var(--color-on-primary);">DEG</button>
-          <button class="calc-btn" id="btn-rad" style="font-size:13px;height:40px;font-family:var(--font-mono);">RAD</button>
-          <button class="calc-btn" id="btn-inv" style="font-size:13px;height:40px;font-family:var(--font-mono);">INV</button>
+        <div class="sc-mode">
+          <button class="sc-mode-btn active" id="btn-deg">DEG</button>
+          <button class="sc-mode-btn" id="btn-rad">RAD</button>
+          <button class="sc-mode-btn" id="btn-inv">INV</button>
         </div>
-        <div class="calc-buttons" style="grid-template-columns:repeat(5,1fr);">
-          <button class="calc-btn op" style="font-size:13px;" data-fn="sin">sin</button>
-          <button class="calc-btn op" style="font-size:13px;" data-fn="cos">cos</button>
-          <button class="calc-btn op" style="font-size:13px;" data-fn="tan">tan</button>
-          <button class="calc-btn op" style="font-size:13px;" data-fn="log">log</button>
-          <button class="calc-btn op" style="font-size:13px;" data-fn="ln">ln</button>
+        <div class="sc-grid">
+          <button class="sc-btn op" data-fn="sin">sin</button>
+          <button class="sc-btn op" data-fn="cos">cos</button>
+          <button class="sc-btn op" data-fn="tan">tan</button>
+          <button class="sc-btn op" data-fn="log">log</button>
+          <button class="sc-btn op" data-fn="ln">ln</button>
 
-          <button class="calc-btn op" style="font-size:13px;" data-fn="sqrt">√</button>
-          <button class="calc-btn op" style="font-size:13px;" data-fn="sq">x²</button>
-          <button class="calc-btn op" style="font-size:13px;" data-fn="pow">xʸ</button>
-          <button class="calc-btn op" style="font-size:13px;" data-fn="pi">π</button>
-          <button class="calc-btn op" style="font-size:13px;" data-fn="e">e</button>
+          <button class="sc-btn op" data-fn="sqrt">√</button>
+          <button class="sc-btn op" data-fn="sq">x²</button>
+          <button class="sc-btn op" data-fn="pow">xʸ</button>
+          <button class="sc-btn op" data-fn="pi">π</button>
+          <button class="sc-btn op" data-fn="e">e</button>
 
-          <button class="calc-btn clear" data-val="C">C</button>
-          <button class="calc-btn op" data-val="(">(</button>
-          <button class="calc-btn op" data-val=")">)</button>
-          <button class="calc-btn op" data-val="%">%</button>
-          <button class="calc-btn op" data-val="÷">÷</button>
+          <button class="sc-btn clear" data-val="C">C</button>
+          <button class="sc-btn op" data-val="(">(</button>
+          <button class="sc-btn op" data-val=")">)</button>
+          <button class="sc-btn op" data-val="%">%</button>
+          <button class="sc-btn op" data-val="÷">÷</button>
 
-          <button class="calc-btn" data-val="7">7</button>
-          <button class="calc-btn" data-val="8">8</button>
-          <button class="calc-btn" data-val="9">9</button>
-          <button class="calc-btn op" data-fn="fact">n!</button>
-          <button class="calc-btn op" data-val="×">×</button>
+          <button class="sc-btn" data-val="7">7</button>
+          <button class="sc-btn" data-val="8">8</button>
+          <button class="sc-btn" data-val="9">9</button>
+          <button class="sc-btn op" data-fn="fact">n!</button>
+          <button class="sc-btn op" data-val="×">×</button>
 
-          <button class="calc-btn" data-val="4">4</button>
-          <button class="calc-btn" data-val="5">5</button>
-          <button class="calc-btn" data-val="6">6</button>
-          <button class="calc-btn op" data-fn="inv">1/x</button>
-          <button class="calc-btn op" data-val="−">−</button>
+          <button class="sc-btn" data-val="4">4</button>
+          <button class="sc-btn" data-val="5">5</button>
+          <button class="sc-btn" data-val="6">6</button>
+          <button class="sc-btn op" data-fn="inv">1/x</button>
+          <button class="sc-btn op" data-val="−">−</button>
 
-          <button class="calc-btn" data-val="1">1</button>
-          <button class="calc-btn" data-val="2">2</button>
-          <button class="calc-btn" data-val="3">3</button>
-          <button class="calc-btn op" data-val="±">±</button>
-          <button class="calc-btn op" data-val="+">+</button>
+          <button class="sc-btn" data-val="1">1</button>
+          <button class="sc-btn" data-val="2">2</button>
+          <button class="sc-btn" data-val="3">3</button>
+          <button class="sc-btn op" data-val="±">±</button>
+          <button class="sc-btn op" data-val="+">+</button>
 
-          <button class="calc-btn span2" data-val="0">0</button>
-          <button class="calc-btn" data-val=".">.</button>
-          <button class="calc-btn op" data-fn="EE">EE</button>
-          <button class="calc-btn equals" data-val="=">=</button>
+          <button class="sc-btn span2" data-val="0">0</button>
+          <button class="sc-btn" data-val=".">.</button>
+          <button class="sc-btn op" data-fn="EE">EE</button>
+          <button class="sc-btn equals" data-val="=">=</button>
         </div>
       </div>
     </div>
@@ -74,9 +74,117 @@ import Layout from '../../layouts/Layout.astro';
       <p>This scientific calculator supports trigonometric functions (sin, cos, tan) in both degrees and radians, logarithms (log₁₀ and natural log), square roots, powers, factorials, and constants π and e.</p>
       <h2>How to use INV mode</h2>
       <p>Press INV to access inverse functions: sin⁻¹, cos⁻¹, tan⁻¹, 10ˣ, eˣ and more. The button labels update to show the inverse operations.</p>
+      <h2>Keyboard shortcuts</h2>
+      <p>Use your keyboard for faster input: number keys (0–9), operators (+, -, *, /), parentheses, Enter for equals, Escape to clear, and Backspace to delete the last digit.</p>
     </div></div>
   </section>
 </Layout>
+
+<style>
+  #sci-calc {
+    background: var(--color-canvas);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-4);
+    overflow: hidden;
+    width: 100%;
+    max-width: 520px;
+  }
+  .sc-display {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    padding: var(--space-xl) var(--space-lg) var(--space-lg);
+    text-align: right;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .sc-expr {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    min-height: 20px;
+    margin-bottom: 6px;
+    word-break: break-all;
+  }
+  .sc-result {
+    font-family: var(--font-mono);
+    font-size: 46px;
+    font-weight: 500;
+    line-height: 1;
+    word-break: break-all;
+  }
+  .sc-mode {
+    display: flex;
+    gap: 8px;
+    padding: var(--space-md) var(--space-lg);
+    background: var(--color-canvas-soft);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+  .sc-mode-btn {
+    flex: 1;
+    height: 38px;
+    border: none;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    background: var(--color-canvas);
+    color: var(--color-mute);
+    box-shadow: var(--shadow-1);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, transform 0.1s;
+  }
+  .sc-mode-btn:hover { background: var(--color-canvas-soft-2); }
+  .sc-mode-btn.active {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    box-shadow: none;
+  }
+  .sc-mode-btn.inv-active {
+    background: var(--color-link);
+    color: #fff;
+    box-shadow: none;
+  }
+  .sc-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding: var(--space-lg);
+    background: var(--color-canvas-soft);
+  }
+  .sc-btn {
+    height: 64px;
+    border: none;
+    border-radius: var(--radius-lg);
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-1);
+    cursor: pointer;
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.1s ease;
+  }
+  .sc-btn:hover { background: var(--color-canvas-soft-2); transform: translateY(-1px); box-shadow: var(--shadow-2); }
+  .sc-btn:active { transform: translateY(0); background: var(--color-hairline); }
+  .sc-btn.op { color: var(--color-link); }
+  .sc-btn.clear { color: var(--color-error); }
+  .sc-btn.equals { background: var(--color-primary); color: var(--color-on-primary); font-size: 20px; }
+  .sc-btn.equals:hover { opacity: 0.9; background: var(--color-primary); }
+  .sc-btn.span2 { grid-column: span 2; }
+
+  @media (max-width: 560px) {
+    .sc-result { font-size: 36px; }
+    .sc-btn { height: 54px; font-size: 15px; }
+    .sc-grid { gap: 7px; padding: var(--space-md); }
+  }
+</style>
+
 <script>
 (function(){
   let display='0', expr='', op='', prev='', justEval=false, deg=true, inv=false;
@@ -99,43 +207,55 @@ import Layout from '../../layouts/Layout.astro';
     };
     return fns[fn] ? String(parseFloat((fns[fn](n)).toFixed(10))) : v;
   }
-  document.getElementById('btn-deg').addEventListener('click',()=>{ deg=true; document.getElementById('btn-deg').style.background='var(--color-primary)'; document.getElementById('btn-deg').style.color='var(--color-on-primary)'; document.getElementById('btn-rad').style.background=''; document.getElementById('btn-rad').style.color=''; });
-  document.getElementById('btn-rad').addEventListener('click',()=>{ deg=false; document.getElementById('btn-rad').style.background='var(--color-primary)'; document.getElementById('btn-rad').style.color='var(--color-on-primary)'; document.getElementById('btn-deg').style.background=''; document.getElementById('btn-deg').style.color=''; });
-  document.getElementById('btn-inv').addEventListener('click',()=>{
+  const degBtn=document.getElementById('btn-deg'), radBtn=document.getElementById('btn-rad'), invBtn=document.getElementById('btn-inv');
+  degBtn.addEventListener('click',()=>{ deg=true; degBtn.classList.add('active'); radBtn.classList.remove('active'); });
+  radBtn.addEventListener('click',()=>{ deg=false; radBtn.classList.add('active'); degBtn.classList.remove('active'); });
+  invBtn.addEventListener('click',()=>{
     inv=!inv;
-    document.getElementById('btn-inv').style.background=inv?'var(--color-link)':'';
-    document.getElementById('btn-inv').style.color=inv?'var(--color-on-primary)':'';
+    invBtn.classList.toggle('inv-active', inv);
     const map={sin:inv?'sin⁻¹':'sin',cos:inv?'cos⁻¹':'cos',tan:inv?'tan⁻¹':'tan',log:inv?'10ˣ':'log',ln:inv?'eˣ':'ln'};
     document.querySelectorAll('#sci-calc [data-fn]').forEach(b=>{const key=Object.keys(map).find(k=>b.dataset.fn===k||b.dataset.fn===map[k]); if(key){b.textContent=map[key]; b.dataset.fn=map[key];}});
   });
+  function handleFn(fn){
+    if(fn==='pi'){display=String(Math.PI);update();return;}
+    if(fn==='e'){display=String(Math.E);update();return;}
+    if(fn==='pow'){op='pow';prev=display;expr=display+' ^ ';display='0';update();return;}
+    if(fn==='EE'){display+='e';update();return;}
+    display=applyFn(fn,display); justEval=true; update();
+  }
+  function handleVal(v){
+    if(v==='C'||v==='Escape'){display='0';expr='';op='';prev='';justEval=false;}
+    else if(v==='±'){display=String(-parseFloat(display));}
+    else if(v==='%'){display=String(parseFloat(display)/100);}
+    else if(['÷','×','−','+','*','/'].includes(v)){
+      const sym=v==='*'?'×':v==='/'?'÷':v;
+      prev=display;op=sym;expr=display+' '+sym;display='0';justEval=false;
+    }
+    else if(v==='='||v==='Enter'){
+      if(!op)return;
+      const a=parseFloat(prev),b=parseFloat(display);
+      let r=op==='÷'?a/b:op==='×'?a*b:op==='−'?a-b:op==='pow'?Math.pow(a,b):a+b;
+      expr=prev+' '+op+' '+display+' ='; display=String(parseFloat(r.toFixed(10))); op=''; justEval=true;
+    }
+    else if(v==='Backspace'){display=display.length>1?display.slice(0,-1):'0';}
+    else if(v==='.'){if(justEval){display='0.';justEval=false;}else if(!display.includes('.'))display+='.';}
+    else if(['(',')',].includes(v)){display+=v;}
+    else if('0123456789'.includes(v)){if(display==='0'||justEval){display=v;justEval=false;}else if(display.length<15)display+=v;}
+    update();
+  }
   document.querySelectorAll('#sci-calc [data-fn]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const fn=btn.dataset.fn;
-      if(fn==='pi'){display=String(Math.PI);update();return;}
-      if(fn==='e'){display=String(Math.E);update();return;}
-      if(fn==='pow'){op='pow';prev=display;expr=display+' ^ ';display='0';update();return;}
-      if(fn==='EE'){display+='e';update();return;}
-      display=applyFn(fn,display); justEval=true; update();
-    });
+    btn.addEventListener('click',()=>handleFn(btn.dataset.fn));
   });
   document.querySelectorAll('#sci-calc [data-val]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const v=btn.dataset.val;
-      if(v==='C'){display='0';expr='';op='';prev='';justEval=false;}
-      else if(v==='±'){display=String(-parseFloat(display));}
-      else if(v==='%'){display=String(parseFloat(display)/100);}
-      else if(['÷','×','−','+'].includes(v)){prev=display;op=v;expr=display+' '+v;display='0';justEval=false;}
-      else if(v==='='){
-        if(!op)return;
-        const a=parseFloat(prev),b=parseFloat(display);
-        let r=op==='÷'?a/b:op==='×'?a*b:op==='−'?a-b:op==='pow'?Math.pow(a,b):a+b;
-        expr=prev+' '+op+' '+display+' ='; display=String(parseFloat(r.toFixed(10))); op=''; justEval=true;
-      }
-      else if(v==='.'){if(justEval){display='0.';justEval=false;}else if(!display.includes('.'))display+='.';}
-      else if(['(',')',].includes(v)){display+=v;}
-      else{if(display==='0'||justEval){display=v;justEval=false;}else if(display.length<15)display+=v;}
-      update();
-    });
+    btn.addEventListener('click',()=>handleVal(btn.dataset.val));
+  });
+  document.addEventListener('keydown', e=>{
+    if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName))return;
+    const k=e.key;
+    if('0123456789.+-*/'.includes(k)||['Enter','Escape','Backspace','(',')'].includes(k)){
+      e.preventDefault();
+      handleVal(k);
+    }
   });
 })();
 </script>
