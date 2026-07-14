@@ -97,6 +97,13 @@ import Layout from '../../layouts/Layout.astro';
       update();
     }
     document.querySelectorAll('#main-calc .calc-btn').forEach(btn => btn.addEventListener('click',()=>handle(btn.dataset.val)));
-    document.addEventListener('keydown', e => { if (!['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) handle(e.key); });
+    document.addEventListener('keydown', e => {
+      if (['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) return;
+      const k = e.key;
+      if ('0123456789.+-*/'.includes(k) || ['Enter','Escape','Backspace'].includes(k)) {
+        e.preventDefault();
+        handle(k);
+      }
+    });
   })();
 </script>

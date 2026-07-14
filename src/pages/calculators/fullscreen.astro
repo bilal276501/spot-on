@@ -78,7 +78,14 @@ import Layout from '../../layouts/Layout.astro';
         update();
       }
       document.querySelectorAll('.fs-btn').forEach(b=>b.addEventListener('click',()=>handle(b.dataset.val)));
-      document.addEventListener('keydown',e=>{if(overlay.style.display!=='none')handle(e.key);});
+      document.addEventListener('keydown',e=>{
+        if(overlay.style.display==='none')return;
+        const k=e.key;
+        if('0123456789.+-*/'.includes(k)||['Enter','Escape','Backspace'].includes(k)){
+          e.preventDefault();
+          handle(k);
+        }
+      });
     })();
   </script>
 </Layout>
