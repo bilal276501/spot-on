@@ -76,4 +76,9 @@ import Layout from '../../layouts/Layout.astro';
     document.getElementById('bmi-cat').textContent=cat;
     document.getElementById('bmi-result').style.display='block';
   });
+  ['bmi-weight','bmi-height'].forEach(id=>{
+    document.getElementById(id).addEventListener('keydown', e=>{
+      if(e.key==='Enter') document.getElementById('bmi-calc').click();
+    });
+  });
 </script>

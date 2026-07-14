@@ -68,4 +68,9 @@ import Layout from '../../layouts/Layout.astro';
     document.getElementById('pr-cost').textContent=cost?'£'+(slabs*cost).toFixed(2):'N/A';
     document.getElementById('patio-result').style.display='block';
   });
+  ['pt-w','pt-l','sl-w','sl-l','gap','cost'].forEach(id=>{
+    document.getElementById(id).addEventListener('keydown', e=>{
+      if(e.key==='Enter') document.getElementById('calc-patio').click();
+    });
+  });
 </script>

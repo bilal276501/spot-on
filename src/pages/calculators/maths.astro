@@ -89,4 +89,17 @@ import Layout from '../../layouts/Layout.astro';
     const map={};factors.forEach(f=>{map[f]=(map[f]||0)+1;});
     document.getElementById('pf-res').textContent=Object.entries(map).map(([b,e])=>e>1?`${b}^${e}`:b).join(' × ');
   });
+  ['f-a-n','f-a-d','f-b-n','f-b-d'].forEach(id=>{
+    document.getElementById(id).addEventListener('keydown', e=>{
+      if(e.key==='Enter') document.getElementById('calc-frac').click();
+    });
+  });
+  ['gl-a','gl-b'].forEach(id=>{
+    document.getElementById(id).addEventListener('keydown', e=>{
+      if(e.key==='Enter') document.getElementById('calc-gl').click();
+    });
+  });
+  document.getElementById('pf-n').addEventListener('keydown', e=>{
+    if(e.key==='Enter') document.getElementById('calc-pf').click();
+  });
 </script>
