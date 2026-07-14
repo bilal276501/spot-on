@@ -1,0 +1,136 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Age Calculator — Calculate Your Exact Age | SpotOn" description="Free online age calculator. Find your exact age in years, months and days, or the time between any two dates.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/calculators/">Calculators</a><span class="breadcrumb-sep">›</span><span>Age Calculator</span></nav>
+        <h1 class="display-lg">Age Calculator</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Find your exact age, or the time between any two dates.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="converter-box" style="max-width:480px; width:100%;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px;">
+          <div class="converter-field">
+            <label for="age-dob">Date of Birth</label>
+            <input type="date" id="age-dob" />
+          </div>
+          <div class="converter-field">
+            <label for="age-to">Age at Date</label>
+            <input type="date" id="age-to" />
+          </div>
+        </div>
+        <button class="btn-primary" id="age-calc" style="width:100%; justify-content:center; margin-bottom:20px;">Calculate Age</button>
+        <div id="age-result" style="display:none;">
+          <div style="background:var(--color-primary); color:var(--color-on-primary); border-radius:var(--radius-md); padding:24px; text-align:center;">
+            <div style="display:flex; justify-content:center; gap:24px; flex-wrap:wrap;">
+              <div>
+                <div style="font-size:36px; font-weight:600; letter-spacing:-1px; line-height:1;" id="age-years">—</div>
+                <div style="font-family:var(--font-mono); font-size:11px; opacity:0.5; margin-top:4px;">Years</div>
+              </div>
+              <div>
+                <div style="font-size:36px; font-weight:600; letter-spacing:-1px; line-height:1;" id="age-months">—</div>
+                <div style="font-family:var(--font-mono); font-size:11px; opacity:0.5; margin-top:4px;">Months</div>
+              </div>
+              <div>
+                <div style="font-size:36px; font-weight:600; letter-spacing:-1px; line-height:1;" id="age-days">—</div>
+                <div style="font-family:var(--font-mono); font-size:11px; opacity:0.5; margin-top:4px;">Days</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:16px; display:grid; grid-template-columns:repeat(3,1fr); gap:8px;">
+            <div style="background:var(--color-canvas-soft); border-radius:6px; padding:12px; text-align:center;">
+              <div style="font-size:16px; font-weight:600;" id="age-total-months">—</div>
+              <div style="font-size:11px; opacity:0.6;">Total months</div>
+            </div>
+            <div style="background:var(--color-canvas-soft); border-radius:6px; padding:12px; text-align:center;">
+              <div style="font-size:16px; font-weight:600;" id="age-total-weeks">—</div>
+              <div style="font-size:11px; opacity:0.6;">Total weeks</div>
+            </div>
+            <div style="background:var(--color-canvas-soft); border-radius:6px; padding:12px; text-align:center;">
+              <div style="font-size:16px; font-weight:600;" id="age-total-days">—</div>
+              <div style="font-size:11px; opacity:0.6;">Total days</div>
+            </div>
+          </div>
+        </div>
+        <p class="body-sm text-mute" id="age-error" style="display:none; margin-top:12px; text-align:center;">Please enter a date of birth that is before the "Age at Date".</p>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>How to use the Age Calculator</h2>
+    <p>Enter your date of birth and, optionally, a different reference date (defaults to today). The calculator shows your exact age broken down into years, months and days, along with the total number of months, weeks and days you've been alive.</p>
+    <h2>Why isn't my age just years?</h2>
+    <p>Because months have different lengths and years have leap days, a simple day-count divided by 365 gives a slightly wrong answer. This calculator counts whole calendar years and months first, then the remaining days, which matches how age is conventionally described.</p>
+    <h2>Common uses</h2>
+    <ul>
+      <li>Finding your exact age for forms, applications or eligibility checks</li>
+      <li>Calculating the age of a child, pet or document as of a specific date</li>
+      <li>Working out the number of days between two events</li>
+    </ul>
+  </div></div></section>
+</Layout>
+<script>
+  const dobInput = document.getElementById('age-dob');
+  const toInput = document.getElementById('age-to');
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  toInput.value = todayStr;
+  toInput.max = todayStr;
+  dobInput.max = todayStr;
+
+  function calcAge() {
+    const dobVal = dobInput.value;
+    const toVal = toInput.value;
+    const errorEl = document.getElementById('age-error');
+    const resultEl = document.getElementById('age-result');
+    if (!dobVal || !toVal) { resultEl.style.display = 'none'; errorEl.style.display = 'none'; return; }
+
+    const dob = new Date(dobVal + 'T00:00:00');
+    const to = new Date(toVal + 'T00:00:00');
+
+    if (dob > to) {
+      resultEl.style.display = 'none';
+      errorEl.style.display = 'block';
+      return;
+    }
+    errorEl.style.display = 'none';
+
+    let years = to.getFullYear() - dob.getFullYear();
+    let months = to.getMonth() - dob.getMonth();
+    let days = to.getDate() - dob.getDate();
+
+    if (days < 0) {
+      months -= 1;
+      const prevMonth = new Date(to.getFullYear(), to.getMonth(), 0);
+      days += prevMonth.getDate();
+    }
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const totalDays = Math.round((to - dob) / msPerDay);
+    const totalWeeks = Math.floor(totalDays / 7);
+    const totalMonths = years * 12 + months;
+
+    document.getElementById('age-years').textContent = years;
+    document.getElementById('age-months').textContent = months;
+    document.getElementById('age-days').textContent = days;
+    document.getElementById('age-total-months').textContent = totalMonths.toLocaleString();
+    document.getElementById('age-total-weeks').textContent = totalWeeks.toLocaleString();
+    document.getElementById('age-total-days').textContent = totalDays.toLocaleString();
+    resultEl.style.display = 'block';
+  }
+
+  document.getElementById('age-calc').addEventListener('click', calcAge);
+  [dobInput, toInput].forEach(el => {
+    el.addEventListener('keydown', e => { if (e.key === 'Enter') calcAge(); });
+    el.addEventListener('change', calcAge);
+  });
+</script>
