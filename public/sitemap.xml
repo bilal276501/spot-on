@@ -7,6 +7,7 @@
   <url><loc>https://spotoncalculator.com/calculators/fullscreen/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://spotoncalculator.com/calculators/bmi/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://spotoncalculator.com/calculators/age/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://spotoncalculator.com/calculators/tip/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://spotoncalculator.com/calculators/percentage/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://spotoncalculator.com/calculators/darts/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://spotoncalculator.com/calculators/patio/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -25,4 +26,5 @@
   <url><loc>https://spotoncalculator.com/converters/time/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://spotoncalculator.com/converters/time-conversions/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://spotoncalculator.com/converters/ring-size/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://spotoncalculator.com/converters/currency/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

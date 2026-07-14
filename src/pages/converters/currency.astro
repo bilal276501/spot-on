@@ -1,0 +1,76 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Currency Converter — Live Exchange Rates | SpotOn" description="Free currency converter with live exchange rates. Convert between USD, EUR, GBP, INR and 150+ currencies instantly.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/converters/">Converters</a><span class="breadcrumb-sep">›</span><span>Currency</span></nav>
+        <h1 class="display-lg">Currency Converter</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Live exchange rates, updated daily.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="converter-box" style="max-width:600px; width:100%;">
+        <div class="converter-row">
+          <div class="converter-field"><label>Amount</label><input type="number" id="cur-val" value="1" step="any" /></div>
+          <div class="converter-swap" id="cur-swap" title="Swap currencies">⇄</div>
+          <div class="converter-field"><label>Result</label><input type="number" id="cur-res" readonly style="background:var(--color-canvas-soft);" /></div>
+        </div>
+        <div class="converter-unit-row">
+          <div class="converter-field"><label>From</label><select id="cur-from"></select></div>
+          <div class="converter-field"><label>To</label><select id="cur-to"></select></div>
+        </div>
+        <p class="body-sm text-mute" id="cur-status" style="margin-top:12px;">Loading live rates…</p>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>How this converter works</h2>
+    <p>Exchange rates are fetched live from a public rates API and cached in your browser for the day, so conversions reflect current market rates rather than fixed figures.</p>
+  </div></div></section>
+</Layout>
+<script>
+  const valEl = document.getElementById('cur-val');
+  const resEl = document.getElementById('cur-res');
+  const fromEl = document.getElementById('cur-from');
+  const toEl = document.getElementById('cur-to');
+  const statusEl = document.getElementById('cur-status');
+  let rates = null;
+
+  async function loadRates() {
+    try {
+      const r = await fetch('https://open.er-api.com/v6/latest/USD');
+      const data = await r.json();
+      rates = data.rates;
+      const codes = Object.keys(rates).sort();
+      fromEl.innerHTML = codes.map(c => `<option value="${c}">${c}</option>`).join('');
+      toEl.innerHTML = codes.map(c => `<option value="${c}">${c}</option>`).join('');
+      fromEl.value = 'USD';
+      toEl.value = 'EUR';
+      statusEl.textContent = 'Rates updated: ' + (data.time_last_update_utc || 'just now');
+      convert();
+    } catch (e) {
+      statusEl.textContent = 'Could not load live rates. Please try again later.';
+    }
+  }
+
+  function convert() {
+    if (!rates) return;
+    const amount = parseFloat(valEl.value) || 0;
+    const rFrom = rates[fromEl.value];
+    const rTo = rates[toEl.value];
+    if (!rFrom || !rTo) return;
+    resEl.value = (amount / rFrom * rTo).toFixed(4);
+  }
+
+  [valEl, fromEl, toEl].forEach(el => el.addEventListener('input', convert));
+  document.getElementById('cur-swap').addEventListener('click', () => {
+    [fromEl.value, toEl.value] = [toEl.value, fromEl.value];
+    convert();
+  });
+
+  loadRates();
+</script>

@@ -1,0 +1,111 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Tip Calculator — Split the Bill & Calculate Tips | SpotOn" description="Free online tip calculator. Calculate tip amount, total bill, and split the cost between any number of people instantly.">
+  <section class="tool-page-header">
+    <div class="container">
+      <div>
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/calculators/">Calculators</a><span class="breadcrumb-sep">›</span><span>Tip Calculator</span></nav>
+        <h1 class="display-lg">Tip Calculator</h1>
+        <p class="body-md text-body" style="margin-top:8px;">Calculate the tip and split the bill between friends.</p>
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft">
+    <div class="container" style="display:flex; justify-content:center;">
+      <div class="converter-box" style="max-width:480px; width:100%;">
+        <div class="converter-field" style="margin-bottom:20px;">
+          <label for="tip-bill">Bill Amount</label>
+          <input type="number" id="tip-bill" placeholder="85.00" min="0" step="0.01" />
+        </div>
+
+        <p class="caption-mono mb-sm">Tip Percentage</p>
+        <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+          <button class="pill tip-pct" data-pct="10">10%</button>
+          <button class="pill tip-pct active" data-pct="15">15%</button>
+          <button class="pill tip-pct" data-pct="18">18%</button>
+          <button class="pill tip-pct" data-pct="20">20%</button>
+          <button class="pill tip-pct" data-pct="25">25%</button>
+        </div>
+        <div class="converter-field" style="margin-bottom:20px;">
+          <label for="tip-custom">Custom % (optional)</label>
+          <input type="number" id="tip-custom" placeholder="Enter a custom %" min="0" step="0.1" />
+        </div>
+
+        <div class="converter-field" style="margin-bottom:24px;">
+          <label for="tip-people">Split Between (people)</label>
+          <input type="number" id="tip-people" value="1" min="1" step="1" />
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;">
+          <div style="background:var(--color-primary); color:var(--color-on-primary); border-radius:var(--radius-md); padding:16px; text-align:center;">
+            <div style="font-size:24px; font-weight:600;" id="tip-amount">£0.00</div>
+            <div style="font-size:11px; font-family:var(--font-mono); opacity:0.5; margin-top:4px;">Tip amount</div>
+          </div>
+          <div style="background:var(--color-primary); color:var(--color-on-primary); border-radius:var(--radius-md); padding:16px; text-align:center;">
+            <div style="font-size:24px; font-weight:600;" id="tip-total">£0.00</div>
+            <div style="font-size:11px; font-family:var(--font-mono); opacity:0.5; margin-top:4px;">Total bill</div>
+          </div>
+          <div style="background:var(--color-primary); color:var(--color-on-primary); border-radius:var(--radius-md); padding:16px; text-align:center;">
+            <div style="font-size:24px; font-weight:600;" id="tip-per-person">£0.00</div>
+            <div style="font-size:11px; font-family:var(--font-mono); opacity:0.5; margin-top:4px;">Per person</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="content-band"><div class="container"><div class="content-prose">
+    <h2>How to use the Tip Calculator</h2>
+    <p>Enter your bill amount, choose a tip percentage (or enter a custom one), and set how many people are splitting the cost. The calculator instantly shows the tip amount, total bill and the amount each person owes.</p>
+    <h2>Typical tipping guidelines</h2>
+    <ul>
+      <li>10–15% for casual dining or average service</li>
+      <li>18–20% for good service at a sit-down restaurant</li>
+      <li>20–25% for exceptional service</li>
+    </ul>
+    <p>Tipping customs vary significantly by country — some places include a service charge automatically, while tipping isn't expected at all in others. Check local norms if you're travelling.</p>
+  </div></div></section>
+</Layout>
+<script>
+  let selectedPct = 15;
+  const billInput = document.getElementById('tip-bill');
+  const customInput = document.getElementById('tip-custom');
+  const peopleInput = document.getElementById('tip-people');
+  const pctButtons = document.querySelectorAll('.tip-pct');
+
+  function formatCurrency(n) {
+    return '£' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function calc() {
+    const bill = parseFloat(billInput.value) || 0;
+    const customVal = parseFloat(customInput.value);
+    const pct = !isNaN(customVal) && customInput.value !== '' ? customVal : selectedPct;
+    const people = Math.max(1, parseInt(peopleInput.value) || 1);
+
+    const tipAmount = bill * (pct / 100);
+    const total = bill + tipAmount;
+    const perPerson = total / people;
+
+    document.getElementById('tip-amount').textContent = formatCurrency(tipAmount);
+    document.getElementById('tip-total').textContent = formatCurrency(total);
+    document.getElementById('tip-per-person').textContent = formatCurrency(perPerson);
+  }
+
+  pctButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      pctButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedPct = parseFloat(btn.dataset.pct);
+      customInput.value = '';
+      calc();
+    });
+  });
+
+  [billInput, customInput, peopleInput].forEach(el => {
+    el.addEventListener('input', calc);
+    el.addEventListener('keydown', e => { if (e.key === 'Enter') calc(); });
+  });
+
+  calc();
+</script>
