@@ -1,76 +1,253 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 ---
-<Layout title="Currency Converter — Live Exchange Rates | SpotOn" description="Free currency converter with live exchange rates. Convert between USD, EUR, GBP, INR and 150+ currencies instantly.">
+<Layout title="Currency Converter — Live & Historical Exchange Rates | SpotOn" description="Free currency converter with live and historical exchange rates. Convert between USD, EUR, GBP, JPY and 30+ currencies for today or any past date.">
   <section class="tool-page-header">
     <div class="container">
       <div>
         <nav class="breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><a href="/converters/">Converters</a><span class="breadcrumb-sep">›</span><span>Currency</span></nav>
         <h1 class="display-lg">Currency Converter</h1>
-        <p class="body-md text-body" style="margin-top:8px;">Live exchange rates, updated daily.</p>
+        <p class="body-md text-body" style="margin-top:8px;">Live rates for today, or check any past date.</p>
       </div>
     </div>
   </section>
   <section class="section section-soft">
     <div class="container" style="display:flex; justify-content:center;">
-      <div class="converter-box" style="max-width:600px; width:100%;">
+      <div class="converter-box cc-box" style="max-width:600px; width:100%;">
         <div class="converter-row">
-          <div class="converter-field"><label>Amount</label><input type="number" id="cur-val" value="1" step="any" /></div>
-          <div class="converter-swap" id="cur-swap" title="Swap currencies">⇄</div>
-          <div class="converter-field"><label>Result</label><input type="number" id="cur-res" readonly style="background:var(--color-canvas-soft);" /></div>
+          <div class="converter-field"><label>Amount</label><input type="number" id="cc-val" value="1" step="any" /></div>
+          <div class="converter-swap" id="cc-swap" title="Swap currencies">⇄</div>
+          <div class="converter-field"><label>Result</label><input type="text" id="cc-res" readonly style="background:var(--color-canvas-soft);" /></div>
         </div>
-        <div class="converter-unit-row">
-          <div class="converter-field"><label>From</label><select id="cur-from"></select></div>
-          <div class="converter-field"><label>To</label><select id="cur-to"></select></div>
+
+        <div class="cc-unit-row">
+          <div class="converter-field">
+            <label>From</label>
+            <button type="button" class="cc-picker-btn" id="cc-from-btn" data-code="USD">
+              <span class="cc-flag" id="cc-from-flag">🇺🇸</span><span id="cc-from-label">USD</span><span class="cc-chev">▾</span>
+            </button>
+          </div>
+          <div class="converter-field">
+            <label>To</label>
+            <button type="button" class="cc-picker-btn" id="cc-to-btn" data-code="EUR">
+              <span class="cc-flag" id="cc-to-flag">🇪🇺</span><span id="cc-to-label">EUR</span><span class="cc-chev">▾</span>
+            </button>
+          </div>
         </div>
-        <p class="body-sm text-mute" id="cur-status" style="margin-top:12px;">Loading live rates…</p>
+
+        <div class="converter-field" style="margin-top:16px;">
+          <label for="cc-date">Rate Date</label>
+          <input type="date" id="cc-date" />
+        </div>
+
+        <p class="body-sm text-mute" id="cc-status" style="margin-top:12px;">Loading rates…</p>
       </div>
     </div>
   </section>
+
+  <!-- Currency picker overlay (shared by From/To) -->
+  <div class="cc-overlay" id="cc-overlay">
+    <div class="cc-sheet">
+      <input type="text" id="cc-search" class="cc-search" placeholder="Search currency…" autocomplete="off" />
+      <div class="cc-list" id="cc-list"></div>
+    </div>
+  </div>
+
   <section class="content-band"><div class="container"><div class="content-prose">
     <h2>How this converter works</h2>
-    <p>Exchange rates are fetched live from a public rates API and cached in your browser for the day, so conversions reflect current market rates rather than fixed figures.</p>
+    <p>Rates come from the European Central Bank's daily reference rates via the free Frankfurter API. Pick any date to see what the rate was on that day, going back several years, or leave it on today for the latest published rate.</p>
+    <p>These are reference rates for informational use — for real transactions, banks and payment providers apply their own margin on top of the market rate.</p>
   </div></div></section>
 </Layout>
+
+<style>
+  .cc-unit-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-top: var(--space-md); }
+  .cc-picker-btn {
+    width: 100%; display: flex; align-items: center; gap: 8px;
+    height: 44px; padding: 0 12px;
+    border: 1px solid var(--color-hairline); border-radius: var(--radius-sm);
+    background: var(--color-canvas); color: var(--color-ink);
+    font-family: var(--font-sans); font-size: 15px; font-weight: 500;
+    cursor: pointer; text-align: left;
+  }
+  .cc-picker-btn:hover { background: var(--color-canvas-soft-2); }
+  .cc-flag { font-size: 20px; line-height: 1; }
+  .cc-chev { margin-left: auto; opacity: 0.4; font-size: 12px; }
+
+  .cc-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    z-index: 200; align-items: flex-start; justify-content: center; padding-top: 10vh;
+  }
+  .cc-overlay.open { display: flex; }
+  .cc-sheet {
+    background: var(--color-canvas); border-radius: var(--radius-lg);
+    width: 100%; max-width: 380px; max-height: 70vh;
+    display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: var(--shadow-4);
+  }
+  .cc-search {
+    border: none; border-bottom: 1px solid var(--color-hairline);
+    padding: 16px; font-size: 15px; background: var(--color-canvas); color: var(--color-ink);
+  }
+  .cc-search:focus { outline: none; }
+  .cc-list { overflow-y: auto; flex: 1; }
+  .cc-group-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--color-mute); padding: 12px 16px 4px;
+  }
+  .cc-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; cursor: pointer;
+  }
+  .cc-item:hover { background: var(--color-canvas-soft-2); }
+  .cc-item .cc-flag { font-size: 22px; }
+  .cc-item-code { font-weight: 600; width: 48px; }
+  .cc-item-name { color: var(--color-mute); font-size: 14px; }
+</style>
+
 <script>
-  const valEl = document.getElementById('cur-val');
-  const resEl = document.getElementById('cur-res');
-  const fromEl = document.getElementById('cur-from');
-  const toEl = document.getElementById('cur-to');
-  const statusEl = document.getElementById('cur-status');
+  const FLAGS = {
+    USD:'🇺🇸', EUR:'🇪🇺', GBP:'🇬🇧', JPY:'🇯🇵', INR:'🇮🇳', AUD:'🇦🇺', CAD:'🇨🇦', CHF:'🇨🇭',
+    CNY:'🇨🇳', SEK:'🇸🇪', NZD:'🇳🇿', MXN:'🇲🇽', SGD:'🇸🇬', HKD:'🇭🇰', NOK:'🇳🇴', KRW:'🇰🇷',
+    TRY:'🇹🇷', RUB:'🇷🇺', ZAR:'🇿🇦', BRL:'🇧🇷', DKK:'🇩🇰', PLN:'🇵🇱', THB:'🇹🇭', IDR:'🇮🇩',
+    HUF:'🇭🇺', CZK:'🇨🇿', ILS:'🇮🇱', PHP:'🇵🇭', MYR:'🇲🇾', RON:'🇷🇴', BGN:'🇧🇬', ISK:'🇮🇸'
+  };
+  const NAMES = {
+    USD:'US Dollar', EUR:'Euro', GBP:'British Pound', JPY:'Japanese Yen', INR:'Indian Rupee',
+    AUD:'Australian Dollar', CAD:'Canadian Dollar', CHF:'Swiss Franc', CNY:'Chinese Yuan',
+    SEK:'Swedish Krona', NZD:'New Zealand Dollar', MXN:'Mexican Peso', SGD:'Singapore Dollar',
+    HKD:'Hong Kong Dollar', NOK:'Norwegian Krone', KRW:'South Korean Won', TRY:'Turkish Lira',
+    RUB:'Russian Ruble', ZAR:'South African Rand', BRL:'Brazilian Real', DKK:'Danish Krone',
+    PLN:'Polish Zloty', THB:'Thai Baht', IDR:'Indonesian Rupiah', HUF:'Hungarian Forint',
+    CZK:'Czech Koruna', ILS:'Israeli Shekel', PHP:'Philippine Peso', MYR:'Malaysian Ringgit',
+    RON:'Romanian Leu', BGN:'Bulgarian Lev', ISK:'Icelandic Krona'
+  };
+  const RECENT_KEY = 'cc-recent-currencies';
+
+  const valEl = document.getElementById('cc-val');
+  const resEl = document.getElementById('cc-res');
+  const dateEl = document.getElementById('cc-date');
+  const statusEl = document.getElementById('cc-status');
+  const fromBtn = document.getElementById('cc-from-btn');
+  const toBtn = document.getElementById('cc-to-btn');
+  const overlay = document.getElementById('cc-overlay');
+  const listEl = document.getElementById('cc-list');
+  const searchEl = document.getElementById('cc-search');
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  dateEl.value = todayStr;
+  dateEl.max = todayStr;
+
+  let activeTarget = null; // 'from' | 'to'
   let rates = null;
 
+  function getRecent() {
+    try { return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'); } catch (e) { return []; }
+  }
+  function addRecent(code) {
+    let recent = getRecent().filter(c => c !== code);
+    recent.unshift(code);
+    recent = recent.slice(0, 3);
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify(recent)); } catch (e) {}
+  }
+
+  function setButton(target, code) {
+    const flagEl = document.getElementById(`cc-${target}-flag`);
+    const labelEl = document.getElementById(`cc-${target}-label`);
+    const btn = target === 'from' ? fromBtn : toBtn;
+    flagEl.textContent = FLAGS[code] || '💱';
+    labelEl.textContent = code;
+    btn.dataset.code = code;
+  }
+
+  function renderList(filter) {
+    const codes = Object.keys(FLAGS).sort();
+    const q = (filter || '').trim().toUpperCase();
+    const matches = q
+      ? codes.filter(c => c.includes(q) || (NAMES[c] || '').toUpperCase().includes(q))
+      : codes;
+
+    let html = '';
+    const recent = getRecent().filter(c => codes.includes(c));
+    if (!q && recent.length) {
+      html += '<div class="cc-group-label">Recent</div>';
+      recent.forEach(c => { html += itemHtml(c); });
+      html += '<div class="cc-group-label">All currencies</div>';
+    }
+    matches.forEach(c => { html += itemHtml(c); });
+    listEl.innerHTML = html || '<div style="padding:16px; color:var(--color-mute);">No matches</div>';
+
+    listEl.querySelectorAll('.cc-item').forEach(el => {
+      el.addEventListener('click', () => {
+        const code = el.dataset.code;
+        setButton(activeTarget, code);
+        addRecent(code);
+        closeOverlay();
+        convert();
+      });
+    });
+  }
+  function itemHtml(c) {
+    return `<div class="cc-item" data-code="${c}"><span class="cc-flag">${FLAGS[c]}</span><span class="cc-item-code">${c}</span><span class="cc-item-name">${NAMES[c] || ''}</span></div>`;
+  }
+
+  function openOverlay(target) {
+    activeTarget = target;
+    searchEl.value = '';
+    renderList('');
+    overlay.classList.add('open');
+    setTimeout(() => searchEl.focus(), 50);
+  }
+  function closeOverlay() {
+    overlay.classList.remove('open');
+    activeTarget = null;
+  }
+
+  fromBtn.addEventListener('click', () => openOverlay('from'));
+  toBtn.addEventListener('click', () => openOverlay('to'));
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
+  searchEl.addEventListener('input', () => renderList(searchEl.value));
+
   async function loadRates() {
+    statusEl.textContent = 'Loading rates…';
+    const date = dateEl.value || todayStr;
+    const endpoint = date === todayStr
+      ? 'https://api.frankfurter.app/latest?from=USD'
+      : `https://api.frankfurter.app/${date}?from=USD`;
     try {
-      const r = await fetch('https://open.er-api.com/v6/latest/USD');
+      const r = await fetch(endpoint);
       const data = await r.json();
       rates = data.rates;
-      const codes = Object.keys(rates).sort();
-      fromEl.innerHTML = codes.map(c => `<option value="${c}">${c}</option>`).join('');
-      toEl.innerHTML = codes.map(c => `<option value="${c}">${c}</option>`).join('');
-      fromEl.value = 'USD';
-      toEl.value = 'EUR';
-      statusEl.textContent = 'Rates updated: ' + (data.time_last_update_utc || 'just now');
+      rates.USD = 1;
+      statusEl.textContent = date === todayStr
+        ? `Rates as of ${data.date} (latest available)`
+        : `Rates for ${data.date}`;
       convert();
     } catch (e) {
-      statusEl.textContent = 'Could not load live rates. Please try again later.';
+      statusEl.textContent = 'Could not load rates. Please try again later.';
     }
   }
 
   function convert() {
     if (!rates) return;
     const amount = parseFloat(valEl.value) || 0;
-    const rFrom = rates[fromEl.value];
-    const rTo = rates[toEl.value];
-    if (!rFrom || !rTo) return;
-    resEl.value = (amount / rFrom * rTo).toFixed(4);
+    const from = fromBtn.dataset.code;
+    const to = toBtn.dataset.code;
+    const rFrom = rates[from];
+    const rTo = rates[to];
+    if (!rFrom || !rTo) { resEl.value = '—'; return; }
+    const result = (amount / rFrom) * rTo;
+    resEl.value = result.toLocaleString(undefined, { maximumFractionDigits: 4 });
   }
 
-  [valEl, fromEl, toEl].forEach(el => el.addEventListener('input', convert));
-  document.getElementById('cur-swap').addEventListener('click', () => {
-    [fromEl.value, toEl.value] = [toEl.value, fromEl.value];
+  document.getElementById('cc-swap').addEventListener('click', () => {
+    const f = fromBtn.dataset.code, t = toBtn.dataset.code;
+    setButton('from', t);
+    setButton('to', f);
     convert();
   });
+  valEl.addEventListener('input', convert);
+  dateEl.addEventListener('change', loadRates);
 
   loadRates();
 </script>

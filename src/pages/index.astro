@@ -263,33 +263,47 @@ import Layout from '../layouts/Layout.astro';
       exprEl.textContent = expr;
     }
 
+    function handleVal(v) {
+      if (v === 'C' || v === 'Escape') { display = '0'; expr = ''; op = ''; prev = ''; justEval = false; }
+      else if (v === '±') { display = String(-parseFloat(display)); }
+      else if (v === '%') { display = String(parseFloat(display) / 100); }
+      else if (['÷','×','−','+','*','/','-'].includes(v)) {
+        const sym = v === '*' ? '×' : v === '/' ? '÷' : v === '-' ? '−' : v;
+        prev = display; op = sym; expr = display + ' ' + sym; display = '0'; justEval = false;
+      }
+      else if (v === '=' || v === 'Enter') {
+        if (!op) return;
+        const a = parseFloat(prev), b = parseFloat(display);
+        let r = op === '÷' ? a/b : op === '×' ? a*b : op === '−' ? a-b : a+b;
+        expr = prev + ' ' + op + ' ' + display + ' =';
+        display = String(parseFloat(r.toFixed(10)));
+        op = ''; justEval = true;
+      }
+      else if (v === 'Backspace') {
+        display = display.length > 1 ? display.slice(0, -1) : '0';
+      }
+      else if (v === '.') {
+        if (justEval) { display = '0.'; justEval = false; }
+        else if (!display.includes('.')) display += '.';
+      }
+      else if ('0123456789'.includes(v)) {
+        if (display === '0' || justEval) { display = v; justEval = false; }
+        else if (display.length < 15) display += v;
+      }
+      update();
+    }
+
     document.querySelectorAll('#hero-calc .calc-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const v = btn.dataset.val;
-        if (v === 'C') { display = '0'; expr = ''; op = ''; prev = ''; justEval = false; }
-        else if (v === '±') { display = String(-parseFloat(display)); }
-        else if (v === '%') { display = String(parseFloat(display) / 100); }
-        else if (['÷','×','−','+'].includes(v)) {
-          prev = display; op = v; expr = display + ' ' + v; display = '0'; justEval = false;
-        }
-        else if (v === '=') {
-          if (!op) return;
-          const a = parseFloat(prev), b = parseFloat(display);
-          let r = op === '÷' ? a/b : op === '×' ? a*b : op === '−' ? a-b : a+b;
-          expr = prev + ' ' + op + ' ' + display + ' =';
-          display = String(parseFloat(r.toFixed(10)));
-          op = ''; justEval = true;
-        }
-        else if (v === '.') {
-          if (justEval) { display = '0.'; justEval = false; }
-          else if (!display.includes('.')) display += '.';
-        }
-        else {
-          if (display === '0' || justEval) { display = v; justEval = false; }
-          else display += v;
-        }
-        update();
-      });
+      btn.addEventListener('click', () => handleVal(btn.dataset.val));
+    });
+
+    document.addEventListener('keydown', e => {
+      if (['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) return;
+      const k = e.key;
+      if ('0123456789.+-*/'.includes(k) || ['Enter','Escape','Backspace'].includes(k)) {
+        e.preventDefault();
+        handleVal(k);
+      }
     });
 
     // Filter pills
