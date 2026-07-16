@@ -212,19 +212,25 @@ import Layout from '../../layouts/Layout.astro';
     statusEl.textContent = 'Loading rates…';
     const date = dateEl.value || todayStr;
     const endpoint = date === todayStr
-      ? 'https://api.frankfurter.app/latest?from=USD'
-      : `https://api.frankfurter.app/${date}?from=USD`;
+      ? 'https://api.frankfurter.dev/v1/latest?base=USD'
+      : `https://api.frankfurter.dev/v1/${date}?base=USD`;
     try {
       const r = await fetch(endpoint);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
       const data = await r.json();
+      if (!data.rates) throw new Error('No rates in response');
       rates = data.rates;
       rates.USD = 1;
+      const dateNote = data.date !== date && date !== todayStr
+        ? ` (nearest available trading day — markets closed on weekends/holidays)`
+        : '';
       statusEl.textContent = date === todayStr
         ? `Rates as of ${data.date} (latest available)`
-        : `Rates for ${data.date}`;
+        : `Rates for ${data.date}${dateNote}`;
       convert();
     } catch (e) {
       statusEl.textContent = 'Could not load rates. Please try again later.';
+      console.error('Currency converter fetch failed:', e);
     }
   }
 
